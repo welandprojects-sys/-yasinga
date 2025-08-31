@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useContext, ReactNode } from "react";
+import React, { useState, useEffect, createContext, useContext, ReactNode } from "react";
 
 interface AuthContextType {
   user: any | null;
@@ -54,18 +54,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  return (
-    <AuthContext.Provider
-      value={{
+  return React.createElement(
+    AuthContext.Provider,
+    {
+      value: {
         user,
         isLoading,
         isAuthenticated: !!user,
         signIn,
         signOut,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+      }
+    },
+    children
   );
 }
 
