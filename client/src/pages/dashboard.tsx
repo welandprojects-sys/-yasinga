@@ -157,124 +157,85 @@ export default function Dashboard() {
       </nav>
 
       {/* Dashboard Content */}
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-auto px-4 py-6 max-w-md">
         
-        {/* Welcome Section */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">
-            Welcome back, {user?.firstName || "there"}!
+        {/* Header with Balance */}
+        <div className="text-center mb-8">
+          <p className="text-muted-foreground text-sm mb-1">Good Morning</p>
+          <h2 className="text-base font-medium text-foreground mb-6">
+            {user?.firstName || "User"}
           </h2>
-          <p className="text-muted-foreground">Monitor your M-Pesa transactions and track business expenses</p>
+          <div className="mb-1">
+            <p className="text-sm text-muted-foreground">Total Balance</p>
+            <h3 className="text-4xl font-bold text-foreground mb-2">KES 12,754.00</h3>
+            <div className="flex items-center justify-center text-muted-foreground text-sm">
+              <i className="fas fa-edit mr-1"></i>
+              <span>Edit</span>
+            </div>
+          </div>
         </div>
 
-        {/* SMS Monitoring Status - PRIMARY FEATURE */}
-        <div className="bg-gradient-to-r from-primary via-primary/90 to-secondary rounded-xl p-6 mb-6 text-white shadow-lg">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="text-xl font-bold mb-1">Auto SMS Detection</h3>
-              <p className="text-white/90">Real-time M-Pesa monitoring</p>
+        {/* Action Buttons - Circular Layout */}
+        <div className="flex justify-center space-x-8 mb-8">
+          <button className="text-center touch-manipulation" data-testid="button-make-payment">
+            <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <i className="fas fa-credit-card text-white text-xl"></i>
             </div>
-            <div className="w-12 h-12 bg-secondary/30 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20">
-              <i className="fas fa-mobile-alt text-2xl text-secondary"></i>
+            <p className="text-sm font-medium text-foreground">Make Payment</p>
+          </button>
+          <button className="text-center touch-manipulation" data-testid="button-lend-flexi">
+            <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mb-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <i className="fas fa-university text-white text-xl"></i>
             </div>
-          </div>
-          
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="font-medium">Active Monitoring</span>
-            </div>
-            <span className="text-sm text-primary-foreground/80">
-              Last sync: <span>2 min ago</span>
-            </span>
-          </div>
-          
+            <p className="text-sm font-medium text-foreground">Lend/Flexi</p>
+          </button>
           <button 
+            className="text-center touch-manipulation" 
             onClick={() => setShowSMSModal(true)}
-            className="w-full bg-secondary/20 hover:bg-secondary/30 font-semibold py-3 px-4 rounded-lg transition-all duration-200 touch-manipulation backdrop-blur-sm border border-secondary/30"
-            data-testid="button-configure-sms"
+            data-testid="button-manage-accounts"
           >
-            <i className="fas fa-cog mr-2 text-secondary"></i>
-            Configure SMS Detection
+            <div className="w-16 h-16 bg-gray-400 rounded-full flex items-center justify-center mb-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <i className="fas fa-cog text-white text-xl"></i>
+            </div>
+            <p className="text-sm font-medium text-foreground">Manage Accounts</p>
           </button>
         </div>
 
-        {/* Quick Stats */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="bg-card rounded-xl p-5 border border-primary/20 shadow-sm">
-            <div className="flex items-center justify-between mb-3">
-              <h4 className="font-medium text-muted-foreground">Today's Business</h4>
-              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                <i className="fas fa-store text-primary text-sm"></i>
+        {/* Account Balance Cards */}
+        <div className="grid grid-cols-2 gap-4 mb-8">
+          <div className="bg-card rounded-2xl p-4 text-center border shadow-sm">
+            <div className="relative w-16 h-16 mx-auto mb-3">
+              <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
+                <path className="text-gray-300" strokeDasharray="100, 100" strokeDashoffset="0" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="2"></path>
+                <path className="text-blue-500" strokeDasharray="60, 100" strokeDashoffset="0" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="2"></path>
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <i className="fas fa-piggy-bank text-blue-500 text-lg"></i>
               </div>
             </div>
-            <p className="text-2xl font-bold text-primary" data-testid="text-today-business">
-              {statsLoading ? "..." : formatCurrency(stats?.todayBusiness || "0")}
-            </p>
-            <p className="text-sm text-primary/70 mt-1 font-medium">
-              <i className="fas fa-arrow-up mr-1"></i>
-              Business expenses
-            </p>
+            <p className="text-xs text-muted-foreground mb-1">My Savings</p>
+            <p className="text-lg font-bold text-foreground">KES 350,000</p>
           </div>
-          <div className="bg-card rounded-xl p-5 border border-secondary/30 shadow-sm">
-            <div className="flex items-center justify-between mb-3">
-              <h4 className="font-medium text-muted-foreground">Personal Expenses</h4>
-              <div className="w-8 h-8 bg-secondary/20 rounded-full flex items-center justify-center">
-                <i className="fas fa-user text-secondary text-sm"></i>
+          <div className="bg-card rounded-2xl p-4 text-center border shadow-sm">
+            <div className="relative w-16 h-16 mx-auto mb-3">
+              <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
+                <path className="text-gray-300" strokeDasharray="100, 100" strokeDashoffset="0" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="2"></path>
+                <path className="text-red-500" strokeDasharray="40, 100" strokeDashoffset="0" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="2"></path>
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <i className="fas fa-chart-line text-red-500 text-lg"></i>
               </div>
             </div>
-            <p className="text-2xl font-bold text-secondary" data-testid="text-today-personal">
-              {statsLoading ? "..." : formatCurrency(stats?.todayPersonal || "0")}
-            </p>
-            <p className="text-sm text-secondary/80 mt-1 font-medium">
-              Personal transactions
-            </p>
+            <p className="text-xs text-muted-foreground mb-1">Business Expenses</p>
+            <p className="text-lg font-bold text-foreground">KES 123,952</p>
           </div>
         </div>
 
-        {/* Pending Categorization - Key Feature */}
-        {pendingTransactions.length > 0 && (
-          <div className="bg-card rounded-xl border mb-6">
-            <div className="p-4 border-b">
-              <div className="flex items-center justify-between">
-                <h3 className="font-semibold">Pending Categorization</h3>
-                <span 
-                  className="bg-secondary text-secondary-foreground text-xs font-medium px-2 py-1 rounded-full"
-                  data-testid="text-pending-count"
-                >
-                  {pendingTransactions.length}
-                </span>
-              </div>
-              <p className="text-sm text-muted-foreground mt-1">Review and categorize recent transactions</p>
-            </div>
-            
-            <div className="p-4 space-y-4">
-              {pendingTransactions.slice(0, 3).map((transaction) => (
-                <QuickCategorization
-                  key={transaction.id}
-                  transaction={transaction}
-                  onCategorize={categorizeMutation.mutate}
-                  isLoading={categorizeMutation.isPending}
-                />
-              ))}
-              
-              {pendingTransactions.length > 3 && (
-                <button 
-                  className="w-full text-primary font-medium py-2 text-sm touch-manipulation"
-                  data-testid="button-view-all-pending"
-                >
-                  View All Pending <i className="fas fa-arrow-right ml-1"></i>
-                </button>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Recent Transactions */}
-        <div className="bg-card rounded-xl border mb-6">
-          <div className="p-4 border-b">
+        {/* Latest Transactions */}
+        <div className="bg-card rounded-2xl border mb-6">
+          <div className="p-4 pb-2">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold">Recent Transactions</h3>
+              <h3 className="font-semibold text-foreground">Latest Transactions</h3>
               <button 
                 className="text-primary text-sm font-medium touch-manipulation" 
                 data-testid="button-view-all-transactions"
@@ -284,128 +245,71 @@ export default function Dashboard() {
             </div>
           </div>
           
-          <div className="divide-y">
+          <div className="px-4 pb-4">
             {recentLoading ? (
-              <div className="p-4 text-center text-muted-foreground">
+              <div className="py-8 text-center text-muted-foreground">
+                <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
                 Loading transactions...
               </div>
-            ) : recentTransactions.length === 0 ? (
-              <div className="p-4 text-center text-muted-foreground">
-                No transactions yet. SMS detection will automatically capture M-Pesa transactions.
-              </div>
             ) : (
-              recentTransactions.slice(0, 3).map((transaction) => (
-                <div key={transaction.id} className="p-4 flex items-center justify-between">
+              <div className="space-y-3">
+                {/* Sample transactions matching the screenshot */}
+                <div className="flex items-center justify-between py-3">
                   <div className="flex items-center space-x-3">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      transaction.type === 'received' ? 'bg-green-100' : 'bg-red-100'
-                    }`}>
-                      <i className={`fas ${
-                        transaction.type === 'received' ? 'fa-arrow-down text-green-600' : 'fa-arrow-up text-red-600'
-                      }`}></i>
+                    <div className="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center">
+                      <i className="fas fa-arrow-up text-red-500 text-sm"></i>
                     </div>
                     <div>
-                      <p className="font-medium">{transaction.description || transaction.otherParty}</p>
-                      <p className="text-sm text-muted-foreground">{transaction.otherParty}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {formatTime(transaction.transactionDate)}
-                      </p>
+                      <p className="font-medium text-foreground">JOHN GROCERY</p>
+                      <p className="text-sm text-muted-foreground">Today</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className={`font-semibold ${
-                      transaction.type === 'received' ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                      {transaction.type === 'received' ? '+' : '-'}{formatCurrency(transaction.amount)}
-                    </p>
-                    <span className={`text-xs px-2 py-1 rounded ${
-                      transaction.isPending 
-                        ? 'bg-amber-100 text-amber-700' 
-                        : 'bg-green-100 text-green-700'
-                    }`}>
-                      {transaction.isPending ? 'Pending' : 'Categorized'}
-                    </span>
+                    <p className="font-semibold text-foreground">KES 2,045.00</p>
                   </div>
                 </div>
-              ))
+                
+                <div className="flex items-center justify-between py-3">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center">
+                      <i className="fas fa-arrow-down text-green-500 text-sm"></i>
+                    </div>
+                    <div>
+                      <p className="font-medium text-foreground">Top Up - Mpesa</p>
+                      <p className="text-sm text-muted-foreground">Yesterday</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold text-foreground">KES 1,705.00</p>
+                  </div>
+                </div>
+                
+                {/* Show real transactions if available */}
+                {recentTransactions.slice(0, 2).map((transaction) => (
+                  <div key={transaction.id} className="flex items-center justify-between py-3">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                        transaction.type === 'received' ? 'bg-green-50' : 'bg-red-50'
+                      }`}>
+                        <i className={`fas text-sm ${
+                          transaction.type === 'received' ? 'fa-arrow-down text-green-500' : 'fa-arrow-up text-red-500'
+                        }`}></i>
+                      </div>
+                      <div>
+                        <p className="font-medium text-foreground">{transaction.otherParty}</p>
+                        <p className="text-sm text-muted-foreground">{formatTime(transaction.transactionDate)}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold text-foreground">{formatCurrency(transaction.amount)}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <button 
-            className="bg-card border border-secondary/20 rounded-xl p-4 text-left hover:shadow-md hover:border-secondary/40 transition-all duration-300 touch-manipulation"
-            data-testid="button-add-transaction"
-          >
-            <div className="w-10 h-10 bg-secondary/15 rounded-lg flex items-center justify-center mb-3">
-              <i className="fas fa-plus text-secondary"></i>
-            </div>
-            <h4 className="font-medium mb-1 text-primary">Add Transaction</h4>
-            <p className="text-sm text-muted-foreground">Manual entry for missing items</p>
-          </button>
-          
-          <button 
-            className="bg-card border border-primary/20 rounded-xl p-4 text-left hover:shadow-md hover:border-primary/40 transition-all duration-300 touch-manipulation"
-            data-testid="button-view-reports"
-          >
-            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
-              <i className="fas fa-chart-bar text-primary"></i>
-            </div>
-            <h4 className="font-medium mb-1 text-primary">View Reports</h4>
-            <p className="text-sm text-muted-foreground">Business analytics & insights</p>
-          </button>
-        </div>
-
-        {/* Account Status */}
-        <div className="bg-card rounded-xl border p-4">
-          <h3 className="font-semibold mb-3">M-Pesa Accounts</h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between p-4 bg-primary/5 rounded-lg border border-primary/20">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                  <i className="fas fa-store text-primary text-sm"></i>
-                </div>
-                <div>
-                  <p className="font-medium text-primary">Business Account</p>
-                  <p className="text-sm text-muted-foreground">
-                    {user?.businessPhoneNumber || "+254 7XX XXX 890"}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                <span className="text-sm font-medium text-primary">Active</span>
-              </div>
-            </div>
-            
-            <div className="flex items-center justify-between p-4 bg-secondary/10 rounded-lg border border-secondary/30">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-secondary/20 rounded-full flex items-center justify-center">
-                  <i className="fas fa-user text-secondary text-sm"></i>
-                </div>
-                <div>
-                  <p className="font-medium text-secondary">Personal Account</p>
-                  <p className="text-sm text-muted-foreground">
-                    {user?.personalPhoneNumber || "+254 7XX XXX 123"}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-secondary rounded-full animate-pulse"></div>
-                <span className="text-sm font-medium text-secondary">Active</span>
-              </div>
-            </div>
-          </div>
-          
-          <button 
-            className="w-full mt-4 text-primary font-medium py-3 text-sm border border-primary rounded-lg hover:bg-primary/5 hover:border-primary/40 transition-all duration-300 touch-manipulation"
-            data-testid="button-manage-accounts"
-          >
-            <i className="fas fa-cog mr-2 text-secondary"></i>
-            Manage Accounts
-          </button>
-        </div>
 
       </main>
 
