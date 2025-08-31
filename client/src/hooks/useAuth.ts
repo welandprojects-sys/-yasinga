@@ -17,7 +17,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch('/api/user', {
+        const response = await fetch('/api/auth/user', {
           credentials: 'include',
         });
         
@@ -39,13 +39,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signIn = () => {
-    window.location.href = '/api/auth/login';
+    window.location.href = '/api/login';
   };
 
   const signOut = async () => {
     try {
-      await fetch('/api/auth/logout', {
-        method: 'POST',
+      await fetch('/api/logout', {
         credentials: 'include',
       });
       setUser(null);
