@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { supabase } from "./db";
 import { 
   insertCategorySchema, 
   insertTransactionSchema, 
@@ -10,16 +10,118 @@ import {
 } from "@shared/schema";
 import { z } from "zod";
 
+// Middleware to verify Supabase JWT token
+const authenticateToken = async (req: any, res: any, next: any) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Access token required' });
+  }
+
+  try {
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    
+    if (error || !user) {
+      return res.status(401).json({ message: 'Invalid token' });
+    }
+
+    req.user = user;
+    next();
+  } catch (error) {
+    return res.status(403).json({ message: 'Token verification failed' });
+  }
+};
+
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Setup Replit authentication
-  await setupAuth(app);
-  
-  // Auth routes are handled by replitAuth.ts
+  // Auth routes
+  app.post('/api/auth/signup', async (req, res) => {
+    try {
+      const { email, password, firstName, lastName } = req.body;
+      
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+          }
+        }
+      });
+
+      if (error) {
+        return res.status(400).json({ message: error.message });
+      }
+
+      res.status(201).json({ user: data.user, session: data.session });
+    } catch (error) {
+      console.error('Signup error:', error);
+      res.status(500).json({ message: 'Failed to create account' });
+    }
+  });
+
+  app.post('/api/auth/signin', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        return res.status(400).json({ message: error.message });
+      }
+
+      res.json({ user: data.user, session: data.session });
+    } catch (error) {
+      console.error('Signin error:', error);
+      res.status(500).json({ message: 'Failed to sign in' });
+    }
+  });
+
+  app.post('/api/auth/signout', async (req, res) => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        return res.status(400).json({ message: error.message });
+      }
+
+      res.json({ message: 'Signed out successfully' });
+    } catch (error) {
+      console.error('Signout error:', error);
+      res.status(500).json({ message: 'Failed to sign out' });
+    }
+  });
+
+  app.get('/api/auth/user', authenticateToken, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      let user = await storage.getUser(userId);
+      
+      // Create user if doesn't exist
+      if (!user) {
+        user = await storage.upsertUser({
+          id: req.user.id,
+          email: req.user.email,
+          firstName: req.user.user_metadata?.first_name,
+          lastName: req.user.user_metadata?.last_name,
+        });
+      }
+      
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
 
   // Dashboard and stats
-  app.get('/api/dashboard/stats', isAuthenticated, async (req: any, res) => {
+  app.get('/api/dashboard/stats', authenticateToken, async (req: any, res) => {
     try {
-      const userId = req.user.claims?.email || req.user.email;
+      const userId = req.user.id;
       const stats = await storage.getDashboardStats(userId);
       res.json(stats);
     } catch (error) {
@@ -29,9 +131,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Categories routes
-  app.get('/api/categories', isAuthenticated, async (req: any, res) => {
+  app.get('/api/categories', authenticateToken, async (req: any, res) => {
     try {
-      const userId = req.user.claims?.email || req.user.email;
+      const userId = req.user.id;
       const categories = await storage.getUserCategories(userId);
       
       // Create default categories if none exist
@@ -47,9 +149,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/categories', isAuthenticated, async (req: any, res) => {
+  app.post('/api/categories', authenticateToken, async (req: any, res) => {
     try {
-      const userId = req.user.claims?.email || req.user.email;
+      const userId = req.user.id;
       const categoryData = insertCategorySchema.parse(req.body);
       const category = await storage.createCategory(userId, categoryData);
       res.status(201).json(category);
@@ -62,9 +164,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put('/api/categories/:categoryId', isAuthenticated, async (req: any, res) => {
+  app.put('/api/categories/:categoryId', authenticateToken, async (req: any, res) => {
     try {
-      const userId = req.user.claims?.email || req.user.email;
+      const userId = req.user.id;
       const { categoryId } = req.params;
       const categoryData = insertCategorySchema.partial().parse(req.body);
       const category = await storage.updateCategory(userId, categoryId, categoryData);
@@ -78,9 +180,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete('/api/categories/:categoryId', isAuthenticated, async (req: any, res) => {
+  app.delete('/api/categories/:categoryId', authenticateToken, async (req: any, res) => {
     try {
-      const userId = req.user.claims?.email || req.user.email;
+      const userId = req.user.id;
       const { categoryId } = req.params;
       await storage.deleteCategory(userId, categoryId);
       res.status(204).send();
@@ -91,9 +193,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Transactions routes
-  app.get('/api/transactions', isAuthenticated, async (req: any, res) => {
+  app.get('/api/transactions', authenticateToken, async (req: any, res) => {
     try {
-      const userId = req.user.claims?.email || req.user.email;
+      const userId = req.user.id;
       const { limit = '20', offset = '0' } = req.query;
       const transactions = await storage.getUserTransactions(userId, parseInt(limit), parseInt(offset));
       res.json(transactions);
@@ -103,9 +205,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/transactions/pending', isAuthenticated, async (req: any, res) => {
+  app.get('/api/transactions/pending', authenticateToken, async (req: any, res) => {
     try {
-      const userId = req.user.claims?.email || req.user.email;
+      const userId = req.user.id;
       const transactions = await storage.getPendingTransactions(userId);
       res.json(transactions);
     } catch (error) {
@@ -114,9 +216,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/transactions', isAuthenticated, async (req: any, res) => {
+  app.post('/api/transactions', authenticateToken, async (req: any, res) => {
     try {
-      const userId = req.user.claims?.email || req.user.email;
+      const userId = req.user.id;
       const transactionData = insertTransactionSchema.parse(req.body);
       
       // Auto-categorization happens in createTransaction method
@@ -132,9 +234,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put('/api/transactions/:transactionId', isAuthenticated, async (req: any, res) => {
+  app.put('/api/transactions/:transactionId', authenticateToken, async (req: any, res) => {
     try {
-      const userId = req.user.claims?.email || req.user.email;
+      const userId = req.user.id;
       const { transactionId } = req.params;
       const transactionData = insertTransactionSchema.partial().parse(req.body);
       const transaction = await storage.updateTransaction(userId, transactionId, transactionData);
@@ -148,9 +250,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete('/api/transactions/:transactionId', isAuthenticated, async (req: any, res) => {
+  app.delete('/api/transactions/:transactionId', authenticateToken, async (req: any, res) => {
     try {
-      const userId = req.user.claims?.email || req.user.email;
+      const userId = req.user.id;
       const { transactionId } = req.params;
       await storage.deleteTransaction(userId, transactionId);
       res.status(204).send();
@@ -161,9 +263,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Quick categorization endpoint
-  app.post('/api/transactions/:transactionId/categorize', isAuthenticated, async (req: any, res) => {
+  app.post('/api/transactions/:transactionId/categorize', authenticateToken, async (req: any, res) => {
     try {
-      const userId = req.user.claims?.email || req.user.email;
+      const userId = req.user.id;
       const { transactionId } = req.params;
       const { categoryId } = req.body;
       
@@ -184,9 +286,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // SMS Settings routes
-  app.get('/api/sms-settings', isAuthenticated, async (req: any, res) => {
+  app.get('/api/sms-settings', authenticateToken, async (req: any, res) => {
     try {
-      const userId = req.user.claims?.email || req.user.email;
+      const userId = req.user.id;
       let settings = await storage.getUserSMSSettings(userId);
       
       // Create default settings if none exist
@@ -206,9 +308,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put('/api/sms-settings', isAuthenticated, async (req: any, res) => {
+  app.put('/api/sms-settings', authenticateToken, async (req: any, res) => {
     try {
-      const userId = req.user.claims?.email || req.user.email;
+      const userId = req.user.id;
       const settingsData = insertSMSSettingsSchema.partial().parse(req.body);
       const settings = await storage.updateSMSSettings(userId, settingsData);
       res.json(settings);
@@ -222,9 +324,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Suppliers routes
-  app.get('/api/suppliers', isAuthenticated, async (req: any, res) => {
+  app.get('/api/suppliers', authenticateToken, async (req: any, res) => {
     try {
-      const userId = req.user.claims?.email || req.user.email;
+      const userId = req.user.id;
       const suppliers = await storage.getUserSuppliers(userId);
       res.json(suppliers);
     } catch (error) {
@@ -233,9 +335,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/suppliers', isAuthenticated, async (req: any, res) => {
+  app.post('/api/suppliers', authenticateToken, async (req: any, res) => {
     try {
-      const userId = req.user.claims?.email || req.user.email;
+      const userId = req.user.id;
       const supplierData = insertSupplierSchema.parse(req.body);
       const supplier = await storage.createSupplier(userId, supplierData);
       res.status(201).json(supplier);
@@ -249,9 +351,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Date range transactions for reports
-  app.get('/api/transactions/range', isAuthenticated, async (req: any, res) => {
+  app.get('/api/transactions/range', authenticateToken, async (req: any, res) => {
     try {
-      const userId = req.user.claims?.email || req.user.email;
+      const userId = req.user.id;
       const { startDate, endDate } = req.query;
       
       if (!startDate || !endDate) {

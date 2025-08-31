@@ -1,11 +1,13 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
 import type { ReactNode } from "react";
+import { supabase } from "@/lib/supabase";
 
 interface AuthContextType {
   user: any | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  signIn: () => Promise<void>;
+  signIn: (email: string, password: string) => Promise<{ error?: any }>;
+  signUp: (email: string, password: string, firstName: string, lastName: string) => Promise<{ error?: any }>;
   signOut: () => Promise<void>;
 }
 
@@ -20,29 +22,49 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await fetch('/api/auth/user');
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-        }
-      } catch (error) {
-        console.error('Auth check failed:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setIsLoading(false);
+    });
 
-    checkAuth();
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const signIn = async () => {
+  const signIn = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      window.location.href = '/api/login';
-    } catch (error) {
-      console.error('Sign in failed:', error);
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      return { error };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const signUp = async (email: string, password: string, firstName: string, lastName: string) => {
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+          }
+        }
+      });
+      return { error };
+    } finally {
       setIsLoading(false);
     }
   };
@@ -50,7 +72,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signOut = async () => {
     setIsLoading(true);
     try {
-      window.location.href = '/api/logout';
+      await supabase.auth.signOut();
     } catch (error) {
       console.error('Sign out failed:', error);
     } finally {
@@ -63,6 +85,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     isLoading,
     isAuthenticated: !!user,
     signIn,
+    signUp,
     signOut,
   };
 
