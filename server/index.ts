@@ -60,4 +60,9 @@ async function main() {
   }, () => {
     log(`serving on port ${port}`);
   });
-})();
+}
+
+main().catch((err) => {
+  console.error("Error starting server:", err);
+  process.exit(1);
+});
