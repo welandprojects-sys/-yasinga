@@ -9,7 +9,8 @@ import Dashboard from "@/pages/dashboard";
 import Transactions from "@/pages/transactions";
 import Reports from "@/pages/reports";
 import Settings from "@/pages/settings";
-import NotFound from "@/pages/not-found";
+import Suppliers from "./pages/suppliers";
+import NotFound from "./pages/not-found";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -24,6 +25,7 @@ function Router() {
           <Route path="/transactions" component={Transactions} />
           <Route path="/reports" component={Reports} />
           <Route path="/settings" component={Settings} />
+          <Route path="/suppliers" component={Suppliers} />
         </>
       )}
       <Route component={NotFound} />

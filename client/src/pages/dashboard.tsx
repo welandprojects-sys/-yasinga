@@ -186,7 +186,11 @@ export default function Dashboard() {
               {stats ? formatCurrency(stats.todayBusiness) : "KSh 0"}
             </p>
           </button>
-          <button className="text-center touch-manipulation" data-testid="button-suppliers">
+          <button 
+            className="text-center touch-manipulation" 
+            onClick={() => window.location.href = "/suppliers"}
+            data-testid="button-suppliers"
+          >
             <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mb-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
               <i className="fas fa-truck text-white text-xl"></i>
             </div>
