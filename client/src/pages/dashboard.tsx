@@ -177,57 +177,61 @@ export default function Dashboard() {
 
         {/* Action Buttons - Circular Layout */}
         <div className="flex justify-center space-x-8 mb-8">
-          <button className="text-center touch-manipulation" data-testid="button-make-payment">
+          <button className="text-center touch-manipulation" data-testid="button-add-expense">
             <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <i className="fas fa-credit-card text-white text-xl"></i>
+              <i className="fas fa-receipt text-white text-xl"></i>
             </div>
-            <p className="text-sm font-medium text-foreground">Make Payment</p>
+            <p className="text-sm font-medium text-foreground">Add Expense</p>
           </button>
-          <button className="text-center touch-manipulation" data-testid="button-lend-flexi">
+          <button className="text-center touch-manipulation" data-testid="button-suppliers">
             <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mb-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <i className="fas fa-university text-white text-xl"></i>
+              <i className="fas fa-truck text-white text-xl"></i>
             </div>
-            <p className="text-sm font-medium text-foreground">Lend/Flexi</p>
+            <p className="text-sm font-medium text-foreground">Suppliers</p>
           </button>
           <button 
             className="text-center touch-manipulation" 
             onClick={() => setShowSMSModal(true)}
-            data-testid="button-manage-accounts"
+            data-testid="button-setup-mpesa"
           >
-            <div className="w-16 h-16 bg-gray-400 rounded-full flex items-center justify-center mb-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <i className="fas fa-cog text-white text-xl"></i>
+            <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mb-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <i className="fas fa-mobile-alt text-white text-xl"></i>
             </div>
-            <p className="text-sm font-medium text-foreground">Manage Accounts</p>
+            <p className="text-sm font-medium text-foreground">Setup M-Pesa</p>
           </button>
         </div>
 
-        {/* Account Balance Cards */}
+        {/* Restaurant Performance Cards */}
         <div className="grid grid-cols-2 gap-4 mb-8">
           <div className="bg-card rounded-2xl p-4 text-center border shadow-sm">
             <div className="relative w-16 h-16 mx-auto mb-3">
               <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
                 <path className="text-gray-300" strokeDasharray="100, 100" strokeDashoffset="0" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="2"></path>
-                <path className="text-blue-500" strokeDasharray="60, 100" strokeDashoffset="0" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="2"></path>
+                <path className="text-green-500" strokeDasharray="75, 100" strokeDashoffset="0" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="2"></path>
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <i className="fas fa-piggy-bank text-blue-500 text-lg"></i>
+                <i className="fas fa-utensils text-green-500 text-lg"></i>
               </div>
             </div>
-            <p className="text-xs text-muted-foreground mb-1">My Savings</p>
-            <p className="text-lg font-bold text-foreground">KES 350,000</p>
+            <p className="text-xs text-muted-foreground mb-1">Today's Revenue</p>
+            <p className="text-lg font-bold text-foreground">
+              {stats ? formatCurrency(stats.todayBusiness) : "KES 0"}
+            </p>
           </div>
           <div className="bg-card rounded-2xl p-4 text-center border shadow-sm">
             <div className="relative w-16 h-16 mx-auto mb-3">
               <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
                 <path className="text-gray-300" strokeDasharray="100, 100" strokeDashoffset="0" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="2"></path>
-                <path className="text-red-500" strokeDasharray="40, 100" strokeDashoffset="0" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="2"></path>
+                <path className="text-red-500" strokeDasharray="45, 100" strokeDashoffset="0" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="2"></path>
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <i className="fas fa-chart-line text-red-500 text-lg"></i>
+                <i className="fas fa-shopping-cart text-red-500 text-lg"></i>
               </div>
             </div>
-            <p className="text-xs text-muted-foreground mb-1">Business Expenses</p>
-            <p className="text-lg font-bold text-foreground">KES 123,952</p>
+            <p className="text-xs text-muted-foreground mb-1">Today's Expenses</p>
+            <p className="text-lg font-bold text-foreground">
+              {stats ? formatCurrency(stats.todayPersonal) : "KES 0"}
+            </p>
           </div>
         </div>
 
