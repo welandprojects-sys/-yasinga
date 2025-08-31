@@ -177,7 +177,11 @@ export default function Dashboard() {
 
         {/* Action Buttons - Circular Layout */}
         <div className="flex justify-center space-x-8 mb-8">
-          <button className="text-center touch-manipulation" data-testid="button-business-expenses">
+          <button 
+            className="text-center touch-manipulation" 
+            onClick={() => window.location.href = '/business-expenses'}
+            data-testid="button-business-expenses"
+          >
             <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
               <i className="fas fa-store text-white text-xl"></i>
             </div>
@@ -201,6 +205,7 @@ export default function Dashboard() {
           </button>
           <button 
             className="text-center touch-manipulation" 
+            onClick={() => window.location.href = '/personal-expenses'}
             data-testid="button-personal-expenses"
           >
             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mb-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">

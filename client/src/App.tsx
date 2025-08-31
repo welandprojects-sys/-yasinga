@@ -10,6 +10,8 @@ import Transactions from "@/pages/transactions";
 import Reports from "@/pages/reports";
 import Settings from "@/pages/settings";
 import Suppliers from "./pages/suppliers";
+import BusinessExpenses from "@/pages/business-expenses";
+import PersonalExpenses from "@/pages/personal-expenses";
 import NotFound from "./pages/not-found";
 
 function Router() {
@@ -26,6 +28,8 @@ function Router() {
           <Route path="/reports" component={Reports} />
           <Route path="/settings" component={Settings} />
           <Route path="/suppliers" component={Suppliers} />
+          <Route path="/business-expenses" component={BusinessExpenses} />
+          <Route path="/personal-expenses" component={PersonalExpenses} />
         </>
       )}
       <Route component={NotFound} />
