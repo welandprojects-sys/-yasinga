@@ -134,7 +134,7 @@ export class DatabaseStorage implements IStorage {
       { name: 'Personal Miscellaneous', type: 'personal' as const, color: '#6b7280', icon: 'fas fa-user' },
     ];
 
-    const createdCategories = await this.db
+    const createdCategories = await db
       .insert(categories)
       .values(
         defaultCategories.map(cat => ({
@@ -175,7 +175,7 @@ export class DatabaseStorage implements IStorage {
       categoryId = await this.autoCategorizeTrransaction(userId, transactionData);
     }
 
-    const [transaction] = await this.db
+    const [transaction] = await db
       .insert(transactions)
       .values({
         ...transactionData,
