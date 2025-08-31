@@ -133,7 +133,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const transactionData = insertTransactionSchema.parse(req.body);
+      
+      // Auto-categorization happens in createTransaction method
       const transaction = await storage.createTransaction(userId, transactionData);
+      
       res.status(201).json(transaction);
     } catch (error) {
       console.error("Error creating transaction:", error);

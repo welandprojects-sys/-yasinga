@@ -158,7 +158,7 @@ export default function Dashboard() {
 
       {/* Dashboard Content */}
       <main className="container mx-auto px-4 py-6 max-w-md">
-        
+
         {/* Header with Balance */}
         <div className="text-center mb-8">
           <p className="text-muted-foreground text-sm mb-1">Good Morning</p>
@@ -265,7 +265,7 @@ export default function Dashboard() {
               </button>
             </div>
           </div>
-          
+
           <div className="px-4 pb-4">
             {recentLoading ? (
               <div className="py-8 text-center text-muted-foreground">
@@ -289,7 +289,7 @@ export default function Dashboard() {
                     <p className="font-semibold text-foreground">KES 2,045.00</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center justify-between py-3">
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center">
@@ -304,7 +304,7 @@ export default function Dashboard() {
                     <p className="font-semibold text-foreground">KES 1,705.00</p>
                   </div>
                 </div>
-                
+
                 {/* Show real transactions if available */}
                 {recentTransactions.slice(0, 2).map((transaction) => (
                   <div key={transaction.id} className="flex items-center justify-between py-3">
@@ -331,6 +331,48 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {/* Pending Transactions Section */}
+        {pendingTransactions && pendingTransactions.length > 0 && (
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-lg">
+                Recent M-Pesa Transactions
+                <span className="ml-2 text-sm bg-green-100 text-green-700 px-2 py-1 rounded">
+                  Auto-categorized
+                </span>
+              </h3>
+              <button 
+                onClick={() => window.location.href = '/transactions'}
+                className="text-primary text-sm font-medium hover:underline touch-manipulation"
+              >
+                View All
+              </button>
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+              <div className="flex items-start space-x-2">
+                <i className="fas fa-magic text-blue-600 mt-0.5"></i>
+                <div>
+                  <p className="text-sm font-medium text-blue-800">Smart Auto-Categorization Active</p>
+                  <p className="text-xs text-blue-700">
+                    All M-Pesa transactions are automatically analyzed and categorized for comprehensive reporting.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {pendingTransactions.slice(0, 3).map((transaction) => (
+                <QuickCategorization
+                  key={transaction.id}
+                  transaction={transaction}
+                  onCategorize={categorizeMutation.mutate}
+                  isLoading={categorizeMutation.isPending}
+                />
+              ))}
+            </div>
+          </div>
+        )}
 
       </main>
 
