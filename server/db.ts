@@ -1,15 +1,36 @@
-import { Pool, neonConfig } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-serverless';
-import ws from "ws";
+import { createClient } from '@supabase/supabase-js';
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
 import * as schema from "@shared/schema";
 
-neonConfig.webSocketConstructor = ws;
-
-if (!process.env.DATABASE_URL) {
+if (!process.env.SUPABASE_URL) {
   throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
+    "SUPABASE_URL must be set. Please add your Supabase project URL to secrets.",
   );
 }
 
-export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-export const db = drizzle({ client: pool, schema });
+if (!process.env.SUPABASE_ANON_KEY) {
+  throw new Error(
+    "SUPABASE_ANON_KEY must be set. Please add your Supabase anon key to secrets.",
+  );
+}
+
+if (!process.env.DATABASE_URL) {
+  throw new Error(
+    "DATABASE_URL must be set. Please add your Supabase database URL to secrets.",
+  );
+}
+
+// Create Supabase client for additional features if needed
+export const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+);
+
+// Create PostgreSQL connection for Drizzle ORM
+const client = postgres(process.env.DATABASE_URL, { 
+  max: 10,
+  ssl: 'require'
+});
+
+export const db = drizzle(client, { schema });
