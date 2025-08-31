@@ -103,6 +103,7 @@ export const suppliers = pgTable("suppliers", {
 
 // Schema exports for validation
 export const insertUserSchema = createInsertSchema(users).pick({
+  id: true,
   email: true,
   firstName: true,
   lastName: true,
