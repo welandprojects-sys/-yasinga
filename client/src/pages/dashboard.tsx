@@ -131,10 +131,12 @@ export default function Dashboard() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <i className="fas fa-wave-square text-primary-foreground text-sm"></i>
+              <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center relative shadow-md">
+                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-xs">Y</span>
+                </div>
               </div>
-              <h1 className="font-bold text-lg">Yasinga</h1>
+              <h1 className="font-bold text-lg text-primary">Yasinga</h1>
             </div>
             <div className="flex items-center space-x-2">
               <button 
@@ -166,14 +168,14 @@ export default function Dashboard() {
         </div>
 
         {/* SMS Monitoring Status - PRIMARY FEATURE */}
-        <div className="bg-gradient-to-r from-primary to-chart-2 rounded-xl p-6 mb-6 text-white">
+        <div className="bg-gradient-to-r from-primary via-primary/90 to-secondary rounded-xl p-6 mb-6 text-white shadow-lg">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="text-xl font-bold mb-1">Auto SMS Detection</h3>
-              <p className="text-primary-foreground/80">Real-time M-Pesa monitoring</p>
+              <p className="text-white/90">Real-time M-Pesa monitoring</p>
             </div>
-            <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-              <i className="fas fa-mobile-alt text-2xl"></i>
+            <div className="w-12 h-12 bg-secondary/30 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20">
+              <i className="fas fa-mobile-alt text-2xl text-secondary"></i>
             </div>
           </div>
           
@@ -189,38 +191,42 @@ export default function Dashboard() {
           
           <button 
             onClick={() => setShowSMSModal(true)}
-            className="w-full bg-white/20 hover:bg-white/30 font-semibold py-3 px-4 rounded-lg transition-all duration-200 touch-manipulation backdrop-blur-sm"
+            className="w-full bg-secondary/20 hover:bg-secondary/30 font-semibold py-3 px-4 rounded-lg transition-all duration-200 touch-manipulation backdrop-blur-sm border border-secondary/30"
             data-testid="button-configure-sms"
           >
-            <i className="fas fa-cog mr-2"></i>
+            <i className="fas fa-cog mr-2 text-secondary"></i>
             Configure SMS Detection
           </button>
         </div>
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="bg-card rounded-xl p-4 border">
-            <div className="flex items-center justify-between mb-2">
+          <div className="bg-card rounded-xl p-5 border border-primary/20 shadow-sm">
+            <div className="flex items-center justify-between mb-3">
               <h4 className="font-medium text-muted-foreground">Today's Business</h4>
-              <i className="fas fa-store text-chart-1"></i>
+              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                <i className="fas fa-store text-primary text-sm"></i>
+              </div>
             </div>
-            <p className="text-2xl font-bold" data-testid="text-today-business">
+            <p className="text-2xl font-bold text-primary" data-testid="text-today-business">
               {statsLoading ? "..." : formatCurrency(stats?.todayBusiness || "0")}
             </p>
-            <p className="text-sm text-green-600 mt-1">
+            <p className="text-sm text-primary/70 mt-1 font-medium">
               <i className="fas fa-arrow-up mr-1"></i>
               Business expenses
             </p>
           </div>
-          <div className="bg-card rounded-xl p-4 border">
-            <div className="flex items-center justify-between mb-2">
+          <div className="bg-card rounded-xl p-5 border border-secondary/30 shadow-sm">
+            <div className="flex items-center justify-between mb-3">
               <h4 className="font-medium text-muted-foreground">Personal Expenses</h4>
-              <i className="fas fa-user text-chart-2"></i>
+              <div className="w-8 h-8 bg-secondary/20 rounded-full flex items-center justify-center">
+                <i className="fas fa-user text-secondary text-sm"></i>
+              </div>
             </div>
-            <p className="text-2xl font-bold" data-testid="text-today-personal">
+            <p className="text-2xl font-bold text-secondary" data-testid="text-today-personal">
               {statsLoading ? "..." : formatCurrency(stats?.todayPersonal || "0")}
             </p>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-sm text-secondary/80 mt-1 font-medium">
               Personal transactions
             </p>
           </div>
@@ -329,24 +335,24 @@ export default function Dashboard() {
         {/* Quick Actions */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           <button 
-            className="bg-card border rounded-xl p-4 text-left hover:shadow-md transition-shadow touch-manipulation"
+            className="bg-card border border-secondary/20 rounded-xl p-4 text-left hover:shadow-md hover:border-secondary/40 transition-all duration-300 touch-manipulation"
             data-testid="button-add-transaction"
           >
-            <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center mb-3">
+            <div className="w-10 h-10 bg-secondary/15 rounded-lg flex items-center justify-center mb-3">
               <i className="fas fa-plus text-secondary"></i>
             </div>
-            <h4 className="font-medium mb-1">Add Transaction</h4>
+            <h4 className="font-medium mb-1 text-primary">Add Transaction</h4>
             <p className="text-sm text-muted-foreground">Manual entry for missing items</p>
           </button>
           
           <button 
-            className="bg-card border rounded-xl p-4 text-left hover:shadow-md transition-shadow touch-manipulation"
+            className="bg-card border border-primary/20 rounded-xl p-4 text-left hover:shadow-md hover:border-primary/40 transition-all duration-300 touch-manipulation"
             data-testid="button-view-reports"
           >
-            <div className="w-10 h-10 bg-chart-1/10 rounded-lg flex items-center justify-center mb-3">
-              <i className="fas fa-chart-bar text-chart-1"></i>
+            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <i className="fas fa-chart-bar text-primary"></i>
             </div>
-            <h4 className="font-medium mb-1">View Reports</h4>
+            <h4 className="font-medium mb-1 text-primary">View Reports</h4>
             <p className="text-sm text-muted-foreground">Business analytics & insights</p>
           </button>
         </div>
@@ -355,48 +361,48 @@ export default function Dashboard() {
         <div className="bg-card rounded-xl border p-4">
           <h3 className="font-semibold mb-3">M-Pesa Accounts</h3>
           <div className="space-y-3">
-            <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-primary/5 rounded-lg border border-primary/20">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                  <i className="fas fa-store text-green-600 text-sm"></i>
+                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                  <i className="fas fa-store text-primary text-sm"></i>
                 </div>
                 <div>
-                  <p className="font-medium">Business Account</p>
+                  <p className="font-medium text-primary">Business Account</p>
                   <p className="text-sm text-muted-foreground">
                     {user?.businessPhoneNumber || "+254 7XX XXX 890"}
                   </p>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-sm font-medium text-green-700">Active</span>
+                <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                <span className="text-sm font-medium text-primary">Active</span>
               </div>
             </div>
             
-            <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-secondary/10 rounded-lg border border-secondary/30">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                  <i className="fas fa-user text-blue-600 text-sm"></i>
+                <div className="w-10 h-10 bg-secondary/20 rounded-full flex items-center justify-center">
+                  <i className="fas fa-user text-secondary text-sm"></i>
                 </div>
                 <div>
-                  <p className="font-medium">Personal Account</p>
+                  <p className="font-medium text-secondary">Personal Account</p>
                   <p className="text-sm text-muted-foreground">
                     {user?.personalPhoneNumber || "+254 7XX XXX 123"}
                   </p>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span className="text-sm font-medium text-blue-700">Active</span>
+                <div className="w-2 h-2 bg-secondary rounded-full animate-pulse"></div>
+                <span className="text-sm font-medium text-secondary">Active</span>
               </div>
             </div>
           </div>
           
           <button 
-            className="w-full mt-4 text-primary font-medium py-2 text-sm border border-primary rounded-lg hover:bg-primary/5 transition-colors touch-manipulation"
+            className="w-full mt-4 text-primary font-medium py-3 text-sm border border-primary rounded-lg hover:bg-primary/5 hover:border-primary/40 transition-all duration-300 touch-manipulation"
             data-testid="button-manage-accounts"
           >
-            <i className="fas fa-cog mr-2"></i>
+            <i className="fas fa-cog mr-2 text-secondary"></i>
             Manage Accounts
           </button>
         </div>
