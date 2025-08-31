@@ -1,42 +1,28 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+import log from "./vite";
 
 const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Add request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
-  const path = req.path;
-  let capturedJsonResponse: Record<string, any> | undefined = undefined;
+  const originalSend = res.send;
 
-  const originalResJson = res.json;
-  res.json = function (bodyJson, ...args) {
-    capturedJsonResponse = bodyJson;
-    return originalResJson.apply(res, [bodyJson, ...args]);
-  };
-
-  res.on("finish", () => {
+  res.send = function(data) {
     const duration = Date.now() - start;
-    if (path.startsWith("/api")) {
-      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
-      }
-
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
-      }
-
-      log(logLine);
-    }
-  });
+    const responseData = typeof data === 'string' ? data : JSON.stringify(data);
+    log(`${req.method} ${req.path} ${res.statusCode} in ${duration}ms :: ${responseData}`);
+    return originalSend.call(this, data);
+  };
 
   next();
 });
 
-(async () => {
+async function main() {
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
@@ -51,8 +37,14 @@ app.use((req, res, next) => {
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
   if (app.get("env") === "development") {
-    await setupVite(app, server);
+    // setupVite needs to be imported from "./vite" and not "./vite.ts"
+    // it is also not async and does not need await
+    const { setupVite } = await import("./vite");
+    setupVite(app, server);
   } else {
+    // serveStatic needs to be imported from "./vite" and not "./vite.ts"
+    // it is also not async and does not need await
+    const { serveStatic } = await import("./vite");
     serveStatic(app);
   }
 
