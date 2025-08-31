@@ -177,27 +177,35 @@ export default function Dashboard() {
 
         {/* Action Buttons - Circular Layout */}
         <div className="flex justify-center space-x-8 mb-8">
-          <button className="text-center touch-manipulation" data-testid="button-add-expense">
+          <button className="text-center touch-manipulation" data-testid="button-business-expenses">
             <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <i className="fas fa-receipt text-white text-xl"></i>
+              <i className="fas fa-store text-white text-xl"></i>
             </div>
-            <p className="text-sm font-medium text-foreground">Add Expense</p>
+            <p className="text-sm font-medium text-foreground">Business Expenses</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {stats ? formatCurrency(stats.todayBusiness) : "KSh 0"}
+            </p>
           </button>
           <button className="text-center touch-manipulation" data-testid="button-suppliers">
             <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mb-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
               <i className="fas fa-truck text-white text-xl"></i>
             </div>
             <p className="text-sm font-medium text-foreground">Suppliers</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {stats ? `${stats.totalTransactions} total` : "0 total"}
+            </p>
           </button>
           <button 
             className="text-center touch-manipulation" 
-            onClick={() => setShowSMSModal(true)}
-            data-testid="button-setup-mpesa"
+            data-testid="button-personal-expenses"
           >
             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mb-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <i className="fas fa-mobile-alt text-white text-xl"></i>
+              <i className="fas fa-user text-white text-xl"></i>
             </div>
-            <p className="text-sm font-medium text-foreground">Setup M-Pesa</p>
+            <p className="text-sm font-medium text-foreground">Personal Expenses</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {stats ? formatCurrency(stats.todayPersonal) : "KSh 0"}
+            </p>
           </button>
         </div>
 
