@@ -105,12 +105,28 @@ export default function SMSConfigModal({ isOpen, onClose }: SMSConfigModalProps)
                 <div>
                   <h3 className="font-medium text-amber-800">SMS Permission Required</h3>
                   <p className="text-sm text-amber-700 mt-1">
-                    Allow Yasinga to read SMS messages to automatically detect M-Pesa transactions
+                    Allow Yasinga to read SMS messages to automatically detect M-Pesa transactions from all your SIM cards
+                  </p>
+                  <p className="text-xs text-amber-600 mt-2 font-medium">
+                    ✓ Works with any SIM card - switch freely between different networks
                   </p>
                 </div>
               </div>
             </div>
             
+            {/* Multi-SIM Notice */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-start space-x-3">
+                <i className="fas fa-sim-card text-blue-600 mt-1"></i>
+                <div>
+                  <h3 className="font-medium text-blue-800">Multi-SIM Support</h3>
+                  <p className="text-sm text-blue-700 mt-1">
+                    Yasinga automatically detects M-Pesa SMS from all active SIM cards. Switch between SIM cards freely - we'll track everything.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* Detection Settings */}
             {isLoading ? (
               <div className="text-center py-4">
@@ -129,7 +145,7 @@ export default function SMSConfigModal({ isOpen, onClose }: SMSConfigModalProps)
                       onChange={(e) => handleToggle('autoDetectTransactions', e.target.checked)}
                       data-testid="checkbox-auto-detect"
                     />
-                    <span className="text-sm">Auto-detect M-Pesa transactions</span>
+                    <span className="text-sm">Auto-detect M-Pesa transactions from all SIM cards</span>
                   </label>
                   <label className="flex items-center space-x-3">
                     <input 
@@ -139,7 +155,7 @@ export default function SMSConfigModal({ isOpen, onClose }: SMSConfigModalProps)
                       onChange={(e) => handleToggle('smartSupplierRecognition', e.target.checked)}
                       data-testid="checkbox-supplier-recognition"
                     />
-                    <span className="text-sm">Smart supplier recognition</span>
+                    <span className="text-sm">Smart supplier recognition across accounts</span>
                   </label>
                   <label className="flex items-center space-x-3">
                     <input 

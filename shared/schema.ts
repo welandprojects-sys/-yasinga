@@ -68,6 +68,7 @@ export const transactions = pgTable("transactions", {
   transactionCost: decimal("transaction_cost", { precision: 12, scale: 2 }),
   isFromSMS: boolean("is_from_sms").default(true),
   smsContent: text("sms_content"),
+  sourcePhoneNumber: varchar("source_phone_number"), // Track which SIM card/phone number the transaction came from
   isPending: boolean("is_pending").default(true),
   transactionDate: timestamp("transaction_date").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
@@ -82,6 +83,7 @@ export const smsSettings = pgTable("sms_settings", {
   smartSupplierRecognition: boolean("smart_supplier_recognition").default(true),
   autoCategorizeRecurring: boolean("auto_categorize_recurring").default(false),
   customKeywords: text("custom_keywords"),
+  monitorAllSimCards: boolean("monitor_all_sim_cards").default(true), // Monitor SMS from all available SIM cards
   lastSyncDate: timestamp("last_sync_date"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),

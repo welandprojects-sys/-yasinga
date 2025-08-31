@@ -92,7 +92,13 @@ export default function Settings() {
 
         {/* M-Pesa Accounts */}
         <div className="bg-card rounded-xl border p-6 mb-6">
-          <h3 className="font-semibold mb-4">M-Pesa Accounts</h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold">M-Pesa Accounts</h3>
+            <div className="flex items-center space-x-1 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+              <i className="fas fa-sim-card"></i>
+              <span>Multi-SIM Ready</span>
+            </div>
+          </div>
           <div className="space-y-4">
             <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
               <div className="flex items-center space-x-3">
@@ -103,6 +109,10 @@ export default function Settings() {
                   <p className="font-medium">Business Account</p>
                   <p className="text-sm text-muted-foreground">
                     {user?.businessPhoneNumber || "Not configured"}
+                  </p>
+                  <p className="text-xs text-green-600">
+                    <i className="fas fa-check-circle mr-1"></i>
+                    Auto-detects from any SIM
                   </p>
                 </div>
               </div>
@@ -124,6 +134,10 @@ export default function Settings() {
                   <p className="text-sm text-muted-foreground">
                     {user?.personalPhoneNumber || "Not configured"}
                   </p>
+                  <p className="text-xs text-blue-600">
+                    <i className="fas fa-check-circle mr-1"></i>
+                    Auto-detects from any SIM
+                  </p>
                 </div>
               </div>
               <button 
@@ -132,6 +146,16 @@ export default function Settings() {
               >
                 Edit
               </button>
+            </div>
+          </div>
+          
+          <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+            <div className="flex items-start space-x-2">
+              <i className="fas fa-info-circle text-amber-600 mt-0.5 text-sm"></i>
+              <div className="text-xs text-amber-700">
+                <p className="font-medium">SIM Card Flexibility</p>
+                <p>Switch between any SIM cards - Yasinga will continue tracking M-Pesa transactions automatically without any setup needed.</p>
+              </div>
             </div>
           </div>
         </div>
