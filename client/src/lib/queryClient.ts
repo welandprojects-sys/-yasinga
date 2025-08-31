@@ -71,4 +71,32 @@ const queryClient = new QueryClient({
   },
 });
 
+// API request utility function
+export async function apiRequest(url: string, options: RequestInit = {}) {
+  // Get the current session
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...((options.headers as Record<string, string>) || {}),
+  };
+  
+  // Add authorization header if user is logged in
+  if (session?.access_token) {
+    headers['Authorization'] = `Bearer ${session.access_token}`;
+  }
+  
+  const response = await fetch(url, {
+    ...options,
+    headers,
+  });
+
+  if (!response.ok) {
+    throw new Error(`${response.status}: ${response.statusText}`);
+  }
+
+  return response.json();
+}
+
+export { queryClient };
 export default queryClient;

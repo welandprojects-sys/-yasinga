@@ -22,7 +22,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch('/api/user');
+        const response = await fetch('/api/auth/user');
         if (response.ok) {
           const userData = await response.json();
           setUser(userData);
@@ -40,7 +40,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signIn = async () => {
     setIsLoading(true);
     try {
-      window.location.href = '/api/auth/replit/login';
+      window.location.href = '/api/login';
     } catch (error) {
       console.error('Sign in failed:', error);
       setIsLoading(false);
@@ -50,8 +50,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signOut = async () => {
     setIsLoading(true);
     try {
-      await fetch('/api/auth/logout', { method: 'POST' });
-      setUser(null);
+      window.location.href = '/api/logout';
     } catch (error) {
       console.error('Sign out failed:', error);
     } finally {
