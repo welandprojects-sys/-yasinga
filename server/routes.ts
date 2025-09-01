@@ -39,25 +39,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { email, password, firstName, lastName } = req.body;
       
+      // Validate input
+      if (!email || !password) {
+        return res.status(400).json({ message: 'Email and password are required' });
+      }
+      
+      if (password.length < 6) {
+        return res.status(400).json({ message: 'Password must be at least 6 characters long' });
+      }
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
-            first_name: firstName,
-            last_name: lastName,
+            first_name: firstName || '',
+            last_name: lastName || '',
           }
         }
       });
 
       if (error) {
+        console.error('Supabase signup error:', error);
+        if (error.message.includes('User already registered')) {
+          return res.status(409).json({ message: 'An account with this email already exists' });
+        }
         return res.status(400).json({ message: error.message });
       }
 
-      res.status(201).json({ user: data.user, session: data.session });
+      res.status(201).json({ 
+        user: data.user, 
+        session: data.session,
+        message: data.user?.email_confirmed_at ? 'Account created successfully' : 'Account created. Please check your email to verify your account.'
+      });
     } catch (error) {
       console.error('Signup error:', error);
-      res.status(500).json({ message: 'Failed to create account' });
+      res.status(500).json({ message: 'Internal server error during account creation' });
     }
   });
 
@@ -65,19 +82,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { email, password } = req.body;
       
+      // Validate input
+      if (!email || !password) {
+        return res.status(400).json({ message: 'Email and password are required' });
+      }
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) {
+        console.error('Supabase auth error:', error);
+        // Return more specific error messages
+        if (error.message.includes('Invalid login credentials')) {
+          return res.status(401).json({ message: 'Invalid email or password' });
+        }
+        if (error.message.includes('Email not confirmed')) {
+          return res.status(400).json({ message: 'Please verify your email address before signing in' });
+        }
         return res.status(400).json({ message: error.message });
       }
 
-      res.json({ user: data.user, session: data.session });
+      if (!data.user || !data.session) {
+        return res.status(401).json({ message: 'Authentication failed' });
+      }
+
+      res.json({ 
+        user: data.user, 
+        session: data.session,
+        message: 'Successfully signed in'
+      });
     } catch (error) {
       console.error('Signin error:', error);
-      res.status(500).json({ message: 'Failed to sign in' });
+      res.status(500).json({ message: 'Internal server error during sign in' });
     }
   });
 
