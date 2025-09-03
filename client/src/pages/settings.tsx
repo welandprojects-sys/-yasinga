@@ -52,7 +52,7 @@ export default function Settings() {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-24">
       {/* Top Navigation */}
       <nav className="bg-card border-b sticky top-0 z-50 pwa-header">
         <div className="container mx-auto px-4">

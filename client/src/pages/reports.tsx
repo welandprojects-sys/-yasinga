@@ -53,7 +53,7 @@ export default function Reports() {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-24">
       {/* Top Navigation */}
       <nav className="bg-card border-b sticky top-0 z-50 pwa-header">
         <div className="container mx-auto px-4">
@@ -62,13 +62,13 @@ export default function Reports() {
               <h1 className="font-bold text-lg">Reports & Analytics</h1>
             </div>
             <div className="flex items-center space-x-2">
-              <button 
-                className="p-2 hover:bg-muted rounded-lg touch-manipulation" 
+              <button
+                className="p-2 hover:bg-muted rounded-lg touch-manipulation"
                 data-testid="button-export"
               >
                 <i className="fas fa-download text-muted-foreground"></i>
               </button>
-              <button 
+              <button
                 className="p-2 hover:bg-muted rounded-lg touch-manipulation"
                 data-testid="button-date-filter"
               >
@@ -81,7 +81,7 @@ export default function Reports() {
 
       {/* Reports Content */}
       <main className="container mx-auto px-4 py-6">
-        
+
         {/* Overview Cards */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           <div className="bg-card rounded-xl p-4 border">
@@ -129,7 +129,7 @@ export default function Reports() {
         {/* Report Actions */}
         <div className="space-y-4 mb-6">
           <h3 className="font-semibold">Generate Reports</h3>
-          
+
           <div className="grid gap-4">
             <button className="bg-card border rounded-xl p-4 text-left hover:shadow-md transition-shadow touch-manipulation">
               <div className="flex items-center justify-between">

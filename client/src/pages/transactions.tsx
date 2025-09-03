@@ -56,10 +56,10 @@ export default function Transactions() {
 
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleTimeString('en-US', { 
-      hour: 'numeric', 
+    return date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
       minute: '2-digit',
-      hour12: true 
+      hour12: true
     });
   };
 
@@ -75,7 +75,7 @@ export default function Transactions() {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-24">
       {/* Top Navigation */}
       <nav className="bg-card border-b sticky top-0 z-50 pwa-header">
         <div className="container mx-auto px-4">
@@ -84,13 +84,13 @@ export default function Transactions() {
               <h1 className="font-bold text-lg">Transactions</h1>
             </div>
             <div className="flex items-center space-x-2">
-              <button 
-                className="p-2 hover:bg-muted rounded-lg touch-manipulation" 
+              <button
+                className="p-2 hover:bg-muted rounded-lg touch-manipulation"
                 data-testid="button-filter"
               >
                 <i className="fas fa-filter text-muted-foreground"></i>
               </button>
-              <button 
+              <button
                 className="p-2 hover:bg-muted rounded-lg touch-manipulation"
                 data-testid="button-search"
               >
@@ -117,7 +117,7 @@ export default function Transactions() {
             <p className="text-muted-foreground mb-6">
               SMS detection will automatically capture your M-Pesa transactions, or you can add them manually.
             </p>
-            <button 
+            <button
               className="bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium touch-manipulation"
               data-testid="button-add-first-transaction"
             >
@@ -135,8 +135,8 @@ export default function Transactions() {
                       transaction.type === 'received' ? 'bg-green-100' : 'bg-red-100'
                     }`}>
                       <i className={`fas ${
-                        transaction.type === 'received' 
-                          ? 'fa-arrow-down text-green-600' 
+                        transaction.type === 'received'
+                          ? 'fa-arrow-down text-green-600'
                           : 'fa-arrow-up text-red-600'
                       } text-lg`}></i>
                     </div>
@@ -157,8 +157,8 @@ export default function Transactions() {
                           {formatDate(transaction.transactionDate)} • {formatTime(transaction.transactionDate)}
                         </p>
                         <span className={`text-xs px-2 py-1 rounded ${
-                          transaction.isPending 
-                            ? 'bg-amber-100 text-amber-700' 
+                          transaction.isPending
+                            ? 'bg-amber-100 text-amber-700'
                             : 'bg-green-100 text-green-700'
                         }`}>
                           {transaction.isPending ? 'Pending' : 'Categorized'}
@@ -167,16 +167,16 @@ export default function Transactions() {
                     </div>
                   </div>
                 </div>
-                
+
                 {transaction.isPending && (
                   <div className="mt-3 pt-3 border-t flex space-x-2">
-                    <button 
+                    <button
                       className="flex-1 bg-primary text-primary-foreground py-2 px-4 rounded-lg text-sm font-medium touch-manipulation"
                       data-testid={`button-categorize-${transaction.id}`}
                     >
                       Categorize
                     </button>
-                    <button 
+                    <button
                       className="px-4 py-2 border border-border rounded-lg text-sm font-medium touch-manipulation"
                       data-testid={`button-edit-${transaction.id}`}
                     >

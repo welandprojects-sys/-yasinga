@@ -106,10 +106,10 @@ export default function Dashboard() {
 
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleTimeString('en-US', { 
-      hour: 'numeric', 
+    return date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
       minute: '2-digit',
-      hour12: true 
+      hour12: true
     });
   };
 
@@ -125,7 +125,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-24">
       {/* Top Navigation */}
       <nav className="bg-card border-b sticky top-0 z-50 pwa-header">
         <div className="container mx-auto px-4">
@@ -139,13 +139,13 @@ export default function Dashboard() {
               <h1 className="font-bold text-lg text-primary">Yasinga</h1>
             </div>
             <div className="flex items-center space-x-2">
-              <button 
-                className="p-2 hover:bg-muted rounded-lg touch-manipulation" 
+              <button
+                className="p-2 hover:bg-muted rounded-lg touch-manipulation"
                 data-testid="button-notifications"
               >
                 <i className="fas fa-bell text-muted-foreground"></i>
               </button>
-              <button 
+              <button
                 className="p-2 hover:bg-muted rounded-lg touch-manipulation"
                 data-testid="button-profile"
               >
@@ -177,8 +177,8 @@ export default function Dashboard() {
 
         {/* Action Buttons - Circular Layout */}
         <div className="flex justify-center space-x-8 mb-8">
-          <button 
-            className="text-center touch-manipulation" 
+          <button
+            className="text-center touch-manipulation"
             onClick={() => window.location.href = '/business-expenses'}
             data-testid="button-business-expenses"
           >
@@ -190,8 +190,8 @@ export default function Dashboard() {
               {stats ? formatCurrency(stats.todayBusiness) : "KSh 0"}
             </p>
           </button>
-          <button 
-            className="text-center touch-manipulation" 
+          <button
+            className="text-center touch-manipulation"
             onClick={() => window.location.href = "/suppliers"}
             data-testid="button-suppliers"
           >
@@ -203,8 +203,8 @@ export default function Dashboard() {
               {stats ? `${stats.totalTransactions} total` : "0 total"}
             </p>
           </button>
-          <button 
-            className="text-center touch-manipulation" 
+          <button
+            className="text-center touch-manipulation"
             onClick={() => window.location.href = '/personal-expenses'}
             data-testid="button-personal-expenses"
           >
@@ -257,8 +257,8 @@ export default function Dashboard() {
           <div className="p-4 pb-2">
             <div className="flex items-center justify-between">
               <h3 className="font-semibold text-foreground">Latest Transactions</h3>
-              <button 
-                className="text-primary text-sm font-medium touch-manipulation" 
+              <button
+                className="text-primary text-sm font-medium touch-manipulation"
                 data-testid="button-view-all-transactions"
               >
                 View All
@@ -341,7 +341,7 @@ export default function Dashboard() {
                   Auto-categorized
                 </span>
               </h3>
-              <button 
+              <button
                 onClick={() => window.location.href = '/transactions'}
                 className="text-primary text-sm font-medium hover:underline touch-manipulation"
               >
@@ -377,9 +377,9 @@ export default function Dashboard() {
       </main>
 
       {/* SMS Configuration Modal */}
-      <SMSConfigModal 
-        isOpen={showSMSModal} 
-        onClose={() => setShowSMSModal(false)} 
+      <SMSConfigModal
+        isOpen={showSMSModal}
+        onClose={() => setShowSMSModal(false)}
       />
 
       {/* Bottom Navigation */}
