@@ -32,20 +32,13 @@ export default function Dashboard() {
   const queryClient = useQueryClient();
   const [showSMSModal, setShowSMSModal] = useState(false);
 
-  // Redirect to login if not authenticated
+  // Check authentication status
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      toast({
-        title: "Unauthorized",
-        description: "You are logged out. Logging in again...",
-        variant: "destructive",
-      });
-      setTimeout(() => {
-        window.location.href = "/api/login";
-      }, 500);
+      // Auth is handled by the router, no need to redirect manually
       return;
     }
-  }, [isAuthenticated, isLoading, toast]);
+  }, [isAuthenticated, isLoading]);
 
   // Fetch dashboard stats
   const { data: stats, isLoading: statsLoading } = useQuery<DashboardStats>({

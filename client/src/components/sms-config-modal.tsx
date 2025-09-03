@@ -47,12 +47,9 @@ export default function SMSConfigModal({ isOpen, onClose }: SMSConfigModalProps)
       if (isUnauthorizedError(error)) {
         toast({
           title: "Unauthorized",
-          description: "You are logged out. Logging in again...",
+          description: "Please refresh the page to continue.",
           variant: "destructive",
         });
-        setTimeout(() => {
-          window.location.href = "/api/login";
-        }, 500);
         return;
       }
       toast({

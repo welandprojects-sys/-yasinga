@@ -44,7 +44,6 @@ function Router() {
           <Route path="/suppliers" component={Suppliers} />
           <Route path="/business-expenses" component={BusinessExpenses} />
           <Route path="/personal-expenses" component={PersonalExpenses} />
-          <Route path="*" component={NotFound} />
         </>
       )}
     </Switch>
