@@ -1,25 +1,14 @@
+import { createClient } from '@supabase/supabase-js';
 
-// Supabase configuration - using mock/development mode when env vars are missing
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'http://localhost:54321';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'mock-key';
+// Supabase configuration
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Mock client for development when Supabase is not configured
-const mockClient = {
-  from: () => ({
-    select: () => Promise.resolve({ data: [], error: null }),
-    insert: () => Promise.resolve({ data: [], error: null }),
-    update: () => Promise.resolve({ data: [], error: null }),
-    delete: () => Promise.resolve({ data: [], error: null }),
-  }),
-  auth: {
-    signUp: () => Promise.resolve({ data: null, error: null }),
-    signIn: () => Promise.resolve({ data: null, error: null }),
-    signOut: () => Promise.resolve({ error: null }),
-    getSession: () => Promise.resolve({ data: { session: null }, error: null }),
-  },
-};
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Missing Supabase environment variables. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your environment.');
+}
 
-export const supabase = mockClient;
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // API client for making requests to our Express backend
 export const apiClient = {
@@ -35,7 +24,7 @@ export const apiClient = {
       throw error;
     }
   },
-  
+
   post: async (endpoint: string, data: any) => {
     try {
       const response = await fetch(`/api${endpoint}`, {
