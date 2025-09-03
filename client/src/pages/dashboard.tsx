@@ -125,8 +125,8 @@ export default function Dashboard() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-red-800 to-red-900 rounded-full flex items-center justify-center relative shadow-md">
-                <span className="text-white font-bold text-xs">Y</span>
+              <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center relative shadow-md">
+                <span className="text-red-800 font-bold text-xs">Y</span>
               </div>
               <h1 className="font-bold text-lg text-red-800">Yasinga</h1>
             </div>
