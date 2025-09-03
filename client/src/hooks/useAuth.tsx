@@ -1,14 +1,14 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
 import type { ReactNode } from "react";
-import { supabase } from "@/lib/supabase";
+import { apiClient } from "@/lib/supabase";
 
 interface AuthContextType {
   user: any | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  signIn: (email: string, password: string) => Promise<{ error?: any }>;
-  signUp: (email: string, password: string, firstName: string, lastName: string) => Promise<{ error?: any }>;
-  signOut: () => Promise<void>;
+  signIn: () => void; // Replit Auth handles sign in via server redirect
+  signUp: () => void; // Same as signIn for Replit Auth
+  signOut: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -22,62 +22,39 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setIsLoading(false);
-    });
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      setIsLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+    // Check if user is authenticated on app load
+    checkAuthStatus();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
-    setIsLoading(true);
+  const checkAuthStatus = async () => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      return { error };
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const signUp = async (email: string, password: string, firstName: string, lastName: string) => {
-    setIsLoading(true);
-    try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-          }
-        }
-      });
-      return { error };
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const signOut = async () => {
-    setIsLoading(true);
-    try {
-      await supabase.auth.signOut();
+      const response = await apiClient.get('/api/auth/user');
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+      } else {
+        setUser(null);
+      }
     } catch (error) {
-      console.error('Sign out failed:', error);
+      setUser(null);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const signIn = () => {
+    // Redirect to Replit Auth login
+    window.location.href = '/api/login';
+  };
+
+  const signUp = () => {
+    // For Replit Auth, signup and signin are the same
+    signIn();
+  };
+
+  const signOut = () => {
+    // Redirect to Replit Auth logout
+    window.location.href = '/api/logout';
   };
 
   const value = {
