@@ -86,7 +86,9 @@ export default function Landing() {
           <div className="text-center mb-6 md:mb-12">
             <div className="inline-flex items-center gap-2 md:gap-3 mb-3 md:mb-6">
               <div className="h-10 w-10 md:h-12 md:w-12 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl flex items-center justify-center">
-                <Smartphone className="h-5 w-5 md:h-6 md:w-6 text-red-800" />
+                <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-to-br from-red-800 to-red-900 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-xs md:text-sm">Y</span>
+                </div>
               </div>
               <h1 className="text-2xl md:text-4xl font-bold text-red-800">
                 Yasinga
