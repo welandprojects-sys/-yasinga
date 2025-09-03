@@ -284,6 +284,75 @@ export class ReportGenerator {
       return false;
     }
   }
+
+  async generateWeeklyCSV(userId: string): Promise<string> {
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(endDate.getDate() - 7);
+
+    const reportData = await this.getReportData(userId, startDate, endDate, 'weekly');
+    return this.createCSVReport(reportData);
+  }
+
+  async generateMonthlyCSV(userId: string): Promise<string> {
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setMonth(endDate.getMonth() - 1);
+    startDate.setDate(1); // Start of the month
+
+    const reportData = await this.getReportData(userId, startDate, endDate, 'monthly');
+    return this.createCSVReport(reportData);
+  }
+
+  private createCSVReport(reportData: ReportData): string {
+    const { summary, transactions, reportType, dateRange, userEmail } = reportData;
+    
+    let csvContent = '';
+    
+    // Header information
+    csvContent += `Yasinga ${reportType.charAt(0).toUpperCase() + reportType.slice(1)} Expense Report\n`;
+    csvContent += `User,${userEmail}\n`;
+    csvContent += `Period,${new Date(dateRange.from).toLocaleDateString()} - ${new Date(dateRange.to).toLocaleDateString()}\n`;
+    csvContent += `Generated,${new Date().toLocaleString()}\n`;
+    csvContent += '\n';
+    
+    // Summary section
+    csvContent += 'SUMMARY\n';
+    csvContent += `Total Transactions,${summary.totalTransactions}\n`;
+    csvContent += `Total Sent,KSh ${summary.totalSent.toLocaleString()}\n`;
+    csvContent += `Total Received,KSh ${summary.totalReceived.toLocaleString()}\n`;
+    csvContent += `Business Expenses,KSh ${summary.businessExpenses.toLocaleString()}\n`;
+    csvContent += `Personal Expenses,KSh ${summary.personalExpenses.toLocaleString()}\n`;
+    csvContent += '\n';
+    
+    // Top categories
+    if (summary.topCategories.length > 0) {
+      csvContent += 'TOP CATEGORIES\n';
+      csvContent += 'Rank,Category,Amount,Transactions\n';
+      summary.topCategories.forEach((category, index) => {
+        csvContent += `${index + 1},${category.name},KSh ${category.amount.toLocaleString()},${category.count}\n`;
+      });
+      csvContent += '\n';
+    }
+    
+    // Transactions
+    csvContent += 'TRANSACTIONS\n';
+    csvContent += 'Date,Type,Amount,Other Party,Category,Description\n';
+    
+    transactions.forEach(tx => {
+      const date = new Date(tx.transactionDate).toLocaleDateString();
+      const amount = `KSh ${parseFloat(tx.amount).toLocaleString()}`;
+      const type = tx.type === 'sent' ? 'Sent' : 'Received';
+      const category = tx.category?.name || 'Uncategorized';
+      const description = tx.description || '';
+      const otherParty = tx.otherParty.replace(/,/g, ';'); // Replace commas to avoid CSV issues
+      const descriptionClean = description.replace(/,/g, ';'); // Replace commas to avoid CSV issues
+      
+      csvContent += `${date},${type},${amount},${otherParty},${category},${descriptionClean}\n`;
+    });
+    
+    return csvContent;
+  }
 }
 
 export const reportGenerator = new ReportGenerator();

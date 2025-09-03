@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
@@ -32,6 +32,67 @@ export default function Reports() {
   const formatCurrency = (amount: string) => {
     const num = parseFloat(amount);
     return `KSh ${num.toLocaleString()}`;
+  };
+
+  const [downloadingReports, setDownloadingReports] = useState<Record<string, boolean>>({});
+
+  const handleDownloadReport = async (reportType: 'weekly' | 'monthly', format: 'pdf' | 'csv') => {
+    const key = `${reportType}-${format}`;
+    
+    try {
+      setDownloadingReports(prev => ({ ...prev, [key]: true }));
+      
+      const token = localStorage.getItem('supabase-token');
+      if (!token) {
+        toast({
+          title: "Authentication Error",
+          description: "Please sign in to download reports.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const response = await fetch(`/api/reports/download/${format}/${reportType}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to download report');
+      }
+
+      // Create download
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      
+      const fileName = `yasinga_${reportType}_report_${new Date().toISOString().split('T')[0]}.${format}`;
+      link.download = fileName;
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      window.URL.revokeObjectURL(url);
+      
+      toast({
+        title: "Download Complete",
+        description: `${reportType.charAt(0).toUpperCase() + reportType.slice(1)} ${format.toUpperCase()} report downloaded successfully.`
+      });
+      
+    } catch (error) {
+      console.error('Download error:', error);
+      toast({
+        title: "Download Failed",
+        description: error instanceof Error ? error.message : "Failed to download report. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setDownloadingReports(prev => ({ ...prev, [key]: false }));
+    }
   };
 
   if (isLoading) {
@@ -124,50 +185,87 @@ export default function Reports() {
           <h3 className="font-semibold">Generate Reports</h3>
 
           <div className="grid gap-4">
-            <button className="bg-card border rounded-xl p-4 text-left hover:shadow-md transition-shadow touch-manipulation">
-              <div className="flex items-center justify-between">
+            {/* Weekly Report */}
+            <div className="bg-card border rounded-xl p-4">
+              <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-chart-1/10 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-chart-line text-chart-1"></i>
+                    <i className="fas fa-calendar-week text-chart-1"></i>
                   </div>
                   <div>
-                    <h4 className="font-medium">Monthly Business Report</h4>
-                    <p className="text-sm text-muted-foreground">Business expenses breakdown</p>
+                    <h4 className="font-medium">Weekly Report</h4>
+                    <p className="text-sm text-muted-foreground">Last 7 days transactions</p>
                   </div>
                 </div>
-                <i className="fas fa-chevron-right text-muted-foreground"></i>
               </div>
-            </button>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => handleDownloadReport('weekly', 'pdf')}
+                  className="flex-1 bg-primary text-primary-foreground px-3 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors touch-manipulation disabled:opacity-50"
+                  disabled={statsLoading || downloadingReports['weekly-pdf']}
+                >
+                  {downloadingReports['weekly-pdf'] ? (
+                    <i className="fas fa-spinner fa-spin mr-2"></i>
+                  ) : (
+                    <i className="fas fa-file-pdf mr-2"></i>
+                  )}
+                  {downloadingReports['weekly-pdf'] ? 'Generating...' : 'Download PDF'}
+                </button>
+                <button 
+                  onClick={() => handleDownloadReport('weekly', 'csv')}
+                  className="flex-1 bg-secondary text-secondary-foreground px-3 py-2 rounded-lg text-sm font-medium hover:bg-secondary/90 transition-colors touch-manipulation disabled:opacity-50"
+                  disabled={statsLoading || downloadingReports['weekly-csv']}
+                >
+                  {downloadingReports['weekly-csv'] ? (
+                    <i className="fas fa-spinner fa-spin mr-2"></i>
+                  ) : (
+                    <i className="fas fa-file-csv mr-2"></i>
+                  )}
+                  {downloadingReports['weekly-csv'] ? 'Generating...' : 'Download CSV'}
+                </button>
+              </div>
+            </div>
 
-            <button className="bg-card border rounded-xl p-4 text-left hover:shadow-md transition-shadow touch-manipulation">
-              <div className="flex items-center justify-between">
+            {/* Monthly Report */}
+            <div className="bg-card border rounded-xl p-4">
+              <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-chart-2/10 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-chart-pie text-chart-2"></i>
+                    <i className="fas fa-chart-line text-chart-2"></i>
                   </div>
                   <div>
-                    <h4 className="font-medium">Category Analysis</h4>
-                    <p className="text-sm text-muted-foreground">Spending by category</p>
+                    <h4 className="font-medium">Monthly Report</h4>
+                    <p className="text-sm text-muted-foreground">Last month transactions</p>
                   </div>
                 </div>
-                <i className="fas fa-chevron-right text-muted-foreground"></i>
               </div>
-            </button>
-
-            <button className="bg-card border rounded-xl p-4 text-left hover:shadow-md transition-shadow touch-manipulation">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-chart-3/10 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-calendar-alt text-chart-3"></i>
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Custom Date Range</h4>
-                    <p className="text-sm text-muted-foreground">Transactions for specific period</p>
-                  </div>
-                </div>
-                <i className="fas fa-chevron-right text-muted-foreground"></i>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => handleDownloadReport('monthly', 'pdf')}
+                  className="flex-1 bg-primary text-primary-foreground px-3 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors touch-manipulation disabled:opacity-50"
+                  disabled={statsLoading || downloadingReports['monthly-pdf']}
+                >
+                  {downloadingReports['monthly-pdf'] ? (
+                    <i className="fas fa-spinner fa-spin mr-2"></i>
+                  ) : (
+                    <i className="fas fa-file-pdf mr-2"></i>
+                  )}
+                  {downloadingReports['monthly-pdf'] ? 'Generating...' : 'Download PDF'}
+                </button>
+                <button 
+                  onClick={() => handleDownloadReport('monthly', 'csv')}
+                  className="flex-1 bg-secondary text-secondary-foreground px-3 py-2 rounded-lg text-sm font-medium hover:bg-secondary/90 transition-colors touch-manipulation disabled:opacity-50"
+                  disabled={statsLoading || downloadingReports['monthly-csv']}
+                >
+                  {downloadingReports['monthly-csv'] ? (
+                    <i className="fas fa-spinner fa-spin mr-2"></i>
+                  ) : (
+                    <i className="fas fa-file-csv mr-2"></i>
+                  )}
+                  {downloadingReports['monthly-csv'] ? 'Generating...' : 'Download CSV'}
+                </button>
               </div>
-            </button>
+            </div>
           </div>
         </div>
 

@@ -9,6 +9,8 @@ import {
   insertSupplierSchema 
 } from "@shared/schema";
 import { z } from "zod";
+import fs from 'fs';
+import path from 'path';
 
 // Middleware to verify Supabase JWT token
 const authenticateToken = async (req: any, res: any, next: any) => {
@@ -408,6 +410,83 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching transactions by date range:", error);
       res.status(500).json({ message: "Failed to fetch transactions" });
+    }
+  });
+
+  // Generate and download PDF reports
+  app.get('/api/reports/download/pdf/:reportType', authenticateToken, async (req: any, res) => {
+    try {
+      const { reportType } = req.params;
+      const userId = req.user.id;
+      
+      if (!['weekly', 'monthly'].includes(reportType)) {
+        return res.status(400).json({ message: "Report type must be 'weekly' or 'monthly'" });
+      }
+
+      // Import reportGenerator dynamically to avoid import issues
+      const { reportGenerator } = await import('../services/reportGenerator');
+      
+      let fileName: string;
+      if (reportType === 'weekly') {
+        fileName = await reportGenerator.generateWeeklyReport(userId);
+      } else {
+        fileName = await reportGenerator.generateMonthlyReport(userId);
+      }
+      
+      const filePath = path.join(reportGenerator.getReportsDirectory(), fileName);
+      
+      // Set headers for PDF download
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+      
+      // Stream the file
+      const fileStream = fs.createReadStream(filePath);
+      fileStream.pipe(res);
+      
+      // Clean up file after download
+      fileStream.on('end', () => {
+        setTimeout(() => {
+          reportGenerator.deleteReport(fileName);
+        }, 5000); // Delete after 5 seconds
+      });
+      
+    } catch (error) {
+      console.error("Error generating PDF report:", error);
+      res.status(500).json({ message: "Failed to generate PDF report" });
+    }
+  });
+
+  // Generate and download CSV reports
+  app.get('/api/reports/download/csv/:reportType', authenticateToken, async (req: any, res) => {
+    try {
+      const { reportType } = req.params;
+      const userId = req.user.id;
+      
+      if (!['weekly', 'monthly'].includes(reportType)) {
+        return res.status(400).json({ message: "Report type must be 'weekly' or 'monthly'" });
+      }
+
+      // Import reportGenerator dynamically
+      const { reportGenerator } = await import('../services/reportGenerator');
+      
+      let csvData: string;
+      if (reportType === 'weekly') {
+        csvData = await reportGenerator.generateWeeklyCSV(userId);
+      } else {
+        csvData = await reportGenerator.generateMonthlyCSV(userId);
+      }
+      
+      const fileName = `yasinga_${reportType}_report_${new Date().toISOString().split('T')[0]}.csv`;
+      
+      // Set headers for CSV download
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+      
+      res.send(csvData);
+      
+    } catch (error) {
+      console.error("Error generating CSV report:", error);
+      res.status(500).json({ message: "Failed to generate CSV report" });
     }
   });
 
