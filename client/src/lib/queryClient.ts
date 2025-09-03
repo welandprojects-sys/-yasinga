@@ -1,6 +1,6 @@
 
 import { QueryClient } from "@tanstack/react-query";
-import { apiClient } from "./supabase";
+import { supabase } from "./supabase";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -8,7 +8,21 @@ const queryClient = new QueryClient({
       queryFn: async ({ queryKey }) => {
         const url = queryKey[0] as string;
         
-        const response = await apiClient.get(url);
+        // Get the current session
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        const headers: Record<string, string> = {
+          'Content-Type': 'application/json',
+        };
+        
+        // Add authorization header if user is logged in
+        if (session?.access_token) {
+          headers['Authorization'] = `Bearer ${session.access_token}`;
+        }
+        
+        const response = await fetch(url, {
+          headers,
+        });
 
         if (!response.ok) {
           if (response.status === 401) {
@@ -29,17 +43,23 @@ const queryClient = new QueryClient({
     },
     mutations: {
       mutationFn: async ({ url, method = "POST", data }: any) => {
-        let response;
+        // Get the current session
+        const { data: { session } } = await supabase.auth.getSession();
         
-        if (method === 'GET') {
-          response = await apiClient.get(url);
-        } else if (method === 'PUT') {
-          response = await apiClient.put(url, data);
-        } else if (method === 'DELETE') {
-          response = await apiClient.delete(url);
-        } else {
-          response = await apiClient.post(url, data);
+        const headers: Record<string, string> = {
+          'Content-Type': 'application/json',
+        };
+        
+        // Add authorization header if user is logged in
+        if (session?.access_token) {
+          headers['Authorization'] = `Bearer ${session.access_token}`;
         }
+        
+        const response = await fetch(url, {
+          method,
+          headers,
+          body: data ? JSON.stringify(data) : undefined,
+        });
 
         if (!response.ok) {
           throw new Error(`${response.status}: ${response.statusText}`);
@@ -53,20 +73,23 @@ const queryClient = new QueryClient({
 
 // API request utility function
 export async function apiRequest(url: string, options: RequestInit = {}) {
-  const method = options.method || 'GET';
-  let response;
+  // Get the current session
+  const { data: { session } } = await supabase.auth.getSession();
   
-  if (method === 'GET') {
-    response = await apiClient.get(url);
-  } else if (method === 'PUT') {
-    const body = options.body ? JSON.parse(options.body as string) : undefined;
-    response = await apiClient.put(url, body);
-  } else if (method === 'DELETE') {
-    response = await apiClient.delete(url);
-  } else {
-    const body = options.body ? JSON.parse(options.body as string) : undefined;
-    response = await apiClient.post(url, body);
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...((options.headers as Record<string, string>) || {}),
+  };
+  
+  // Add authorization header if user is logged in
+  if (session?.access_token) {
+    headers['Authorization'] = `Bearer ${session.access_token}`;
   }
+  
+  const response = await fetch(url, {
+    ...options,
+    headers,
+  });
 
   if (!response.ok) {
     throw new Error(`${response.status}: ${response.statusText}`);

@@ -1,26 +1,10 @@
-// Replit Auth API client - no configuration needed
-// Auth is handled by server-side routes
+import { createClient } from '@supabase/supabase-js';
 
-// Helper for making authenticated API requests
-export const apiClient = {
-  get: (url: string) => fetch(url, { credentials: 'include' }),
-  post: (url: string, data?: any) => 
-    fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: data ? JSON.stringify(data) : undefined,
-      credentials: 'include'
-    }),
-  put: (url: string, data?: any) => 
-    fetch(url, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: data ? JSON.stringify(data) : undefined,
-      credentials: 'include'
-    }),
-  delete: (url: string) => 
-    fetch(url, {
-      method: 'DELETE',
-      credentials: 'include'
-    })
-};
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://llwshsrhvsjxnjaotafb.supabase.co';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxsd3Noc3JodnNqeG5qYW90YWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYyNzMzODEsImV4cCI6MjA3MTg0OTM4MX0.K8MUrt60zIdyfx6FhW05KfoUxASBcky_K5K-cviygA4';
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Missing Supabase environment variables. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your environment.');
+}
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
