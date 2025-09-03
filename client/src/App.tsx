@@ -31,7 +31,10 @@ function Router() {
   return (
     <Switch>
       {!isAuthenticated ? (
-        <Route path="/" component={Landing} />
+        <>
+          <Route path="/" component={Landing} />
+          <Route path="*" component={Landing} />
+        </>
       ) : (
         <>
           <Route path="/" component={Dashboard} />
@@ -41,9 +44,9 @@ function Router() {
           <Route path="/suppliers" component={Suppliers} />
           <Route path="/business-expenses" component={BusinessExpenses} />
           <Route path="/personal-expenses" component={PersonalExpenses} />
+          <Route path="*" component={NotFound} />
         </>
       )}
-      <Route component={NotFound} />
     </Switch>
   );
 }

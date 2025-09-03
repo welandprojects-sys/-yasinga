@@ -21,11 +21,16 @@ export default function Settings() {
         title: "Logging out",
         description: "Signing you out...",
       });
+      
       await signOut();
-      toast({
-        title: "Logged out",
-        description: "You have been successfully logged out.",
-      });
+      
+      // Show success message with a small delay to ensure it appears on the landing page
+      setTimeout(() => {
+        toast({
+          title: "Logged out",
+          description: "You have been successfully logged out.",
+        });
+      }, 100);
     } catch (error) {
       toast({
         title: "Logout failed",
