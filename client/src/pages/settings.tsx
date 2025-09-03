@@ -5,29 +5,34 @@ import BottomNavigation from "@/components/ui/bottom-navigation";
 
 export default function Settings() {
   const { toast } = useToast();
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading, signOut } = useAuth();
 
   // Redirect to login if not authenticated
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
+      // User will automatically be redirected to landing page by the Router component
+      // No need for manual redirect
+    }
+  }, [isAuthenticated, isLoading]);
+
+  const handleLogout = async () => {
+    try {
       toast({
-        title: "Unauthorized",
-        description: "You are logged out. Logging in again...",
+        title: "Logging out",
+        description: "Signing you out...",
+      });
+      await signOut();
+      toast({
+        title: "Logged out",
+        description: "You have been successfully logged out.",
+      });
+    } catch (error) {
+      toast({
+        title: "Logout failed",
+        description: "An error occurred while logging out.",
         variant: "destructive",
       });
-      setTimeout(() => {
-        window.location.href = "/api/login";
-      }, 500);
-      return;
     }
-  }, [isAuthenticated, isLoading, toast]);
-
-  const handleLogout = () => {
-    toast({
-      title: "Logging out",
-      description: "Redirecting to logout...",
-    });
-    window.location.href = "/api/logout";
   };
 
   if (isLoading) {
