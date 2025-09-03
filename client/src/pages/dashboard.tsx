@@ -13,6 +13,7 @@ interface DashboardStats {
   todayPersonal: string;
   pendingCount: number;
   totalTransactions: number;
+  totalBalance: string;
 }
 
 interface Transaction {
@@ -159,11 +160,13 @@ export default function Dashboard() {
             {user?.firstName || "User"}
           </h2>
           <div className="mb-1">
-            <p className="text-sm text-muted-foreground">Total Balance</p>
-            <h3 className="text-4xl font-bold text-foreground mb-2">KES 12,754.00</h3>
+            <p className="text-sm text-muted-foreground">Total Expenses</p>
+            <h3 className="text-4xl font-bold text-foreground mb-2" data-testid="text-total-balance">
+              {statsLoading ? "Loading..." : formatCurrency(stats?.totalBalance || '0')}
+            </h3>
             <div className="flex items-center justify-center text-muted-foreground text-sm">
-              <i className="fas fa-edit mr-1"></i>
-              <span>Edit</span>
+              <i className="fas fa-chart-line mr-1"></i>
+              <span>All Time</span>
             </div>
           </div>
         </div>

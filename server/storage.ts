@@ -55,6 +55,7 @@ export interface IStorage {
     todayPersonal: string;
     pendingCount: number;
     totalTransactions: number;
+    totalBalance: string;
   }>;
 }
 
@@ -416,6 +417,7 @@ export class DatabaseStorage implements IStorage {
     todayPersonal: string;
     pendingCount: number;
     totalTransactions: number;
+    totalBalance: string;
   }> {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -464,11 +466,24 @@ export class DatabaseStorage implements IStorage {
       .from(transactions)
       .where(eq(transactions.userId, userId));
 
+    // Get total balance (all personal and business expenses)
+    const totalBalanceResult = await db
+      .select({ sum: sql<string>`COALESCE(SUM(${transactions.amount}), 0)` })
+      .from(transactions)
+      .leftJoin(categories, eq(transactions.categoryId, categories.id))
+      .where(
+        and(
+          eq(transactions.userId, userId),
+          eq(transactions.isPending, false)
+        )
+      );
+
     return {
       todayBusiness: todayBusinessResult[0]?.sum || '0',
       todayPersonal: todayPersonalResult[0]?.sum || '0',
       pendingCount: pendingResult[0]?.count || 0,
       totalTransactions: totalResult[0]?.count || 0,
+      totalBalance: totalBalanceResult[0]?.sum || '0',
     };
   }
 }
