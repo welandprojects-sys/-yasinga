@@ -30,7 +30,9 @@ export const supabase = createClient(
 // Create PostgreSQL connection for Drizzle ORM
 const client = postgres(process.env.DATABASE_URL, { 
   max: 10,
-  ssl: 'require'
+  ssl: 'require',
+  idle_timeout: 20,
+  connect_timeout: 60
 });
 
 export const db = drizzle(client, { schema });
