@@ -110,7 +110,7 @@
     -webkit-user-select: none;
     user-select: none;
   }
-  
+
   .safe-area-bottom {
     padding-bottom: env(safe-area-inset-bottom);
   }
@@ -121,4 +121,19 @@
   .pwa-header {
     padding-top: env(safe-area-inset-top);
   }
+}
+
+/* Common input styles */
+.ui-input {
+  @apply border-gray-200 dark:border-gray-600 focus:border-primary dark:focus:border-primary transition-colors;
+}
+
+/* Common button styles */
+.ui-button-primary {
+  @apply bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02];
+}
+
+/* Common label styles */
+.ui-label {
+  @apply text-gray-700 dark:text-gray-300 font-medium;
 }
