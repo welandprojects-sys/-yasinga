@@ -1,0 +1,42 @@
+
+{
+  "expo": {
+    "name": "Yasinga",
+    "slug": "yasinga-mpesa-tracker",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./client/public/icon-1024.png",
+    "userInterfaceStyle": "light",
+    "scheme": "yasinga",
+    "splash": {
+      "image": "./client/public/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FBBF24"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yasinga.mpesatracker"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./client/public/adaptive-icon-foreground.png",
+        "backgroundColor": "#FBBF24"
+      },
+      "package": "com.yasinga.mpesatracker",
+      "permissions": [
+        "READ_SMS",
+        "RECEIVE_SMS"
+      ]
+    },
+    "web": {
+      "favicon": "./client/public/favicon.ico",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router"
+    ]
+  }
+}

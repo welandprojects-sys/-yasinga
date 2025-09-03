@@ -1,0 +1,16 @@
+
+<svg width="432" height="432" viewBox="0 0 432 432" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="redGradFg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#991B1B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7F1D1D;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Red circle centered in adaptive icon safe area -->
+  <circle cx="216" cy="216" r="130" fill="url(#redGradFg)"/>
+  
+  <!-- White Y text -->
+  <text x="216" y="258" font-family="Arial, sans-serif" font-size="160" font-weight="bold" 
+        text-anchor="middle" fill="white">Y</text>
+</svg>

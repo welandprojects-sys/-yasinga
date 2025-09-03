@@ -1,0 +1,23 @@
+
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="yellowGradSplash" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FBBF24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F59E0B;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="redGradSplash" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#991B1B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7F1D1D;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Outer yellow circle -->
+  <circle cx="256" cy="256" r="200" fill="url(#yellowGradSplash)"/>
+  
+  <!-- Inner red circle -->
+  <circle cx="256" cy="256" r="120" fill="url(#redGradSplash)"/>
+  
+  <!-- White Y text -->
+  <text x="256" y="306" font-family="Arial, sans-serif" font-size="160" font-weight="bold" 
+        text-anchor="middle" fill="white">Y</text>
+</svg>
