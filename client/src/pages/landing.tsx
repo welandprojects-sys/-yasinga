@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -28,7 +27,7 @@ export default function Landing() {
 
     try {
       const { error } = await signIn(loginEmail, loginPassword);
-      
+
       if (error) {
         toast({
           title: "Sign In Failed",
@@ -55,7 +54,7 @@ export default function Landing() {
 
     try {
       const { error } = await signUp(signupEmail, signupPassword, firstName, lastName);
-      
+
       if (error) {
         toast({
           title: "Sign Up Failed",
@@ -78,7 +77,7 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 dark:from-gray-900 dark:via-emerald-900 dark:to-teal-900">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-slate-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900">
       {/* Hero Section */}
       <div className="relative">
         <div className="absolute inset-0 bg-grid-black/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]" />
@@ -86,10 +85,10 @@ export default function Landing() {
           {/* Header with branding - Compact for mobile */}
           <div className="text-center mb-6 md:mb-12">
             <div className="inline-flex items-center gap-2 md:gap-3 mb-3 md:mb-6">
-              <div className="h-10 w-10 md:h-12 md:w-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+              <div className="h-10 w-10 md:h-12 md:w-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
                 <Smartphone className="h-5 w-5 md:h-6 md:w-6 text-white" />
               </div>
-              <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+              <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 Yasinga
               </h1>
             </div>
@@ -101,28 +100,28 @@ export default function Landing() {
           {/* Features Grid - Hidden on mobile */}
           <div className="hidden md:grid md:grid-cols-3 gap-8 mb-12">
             <div className="text-center group">
-              <div className="h-16 w-16 bg-gradient-to-br from-emerald-100 to-emerald-200 dark:from-emerald-800 dark:to-emerald-700 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200">
-                <Zap className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+              <div className="h-16 w-16 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-800 dark:to-blue-700 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200">
+                <Zap className="h-8 w-8 text-blue-600 dark:text-blue-400" />
               </div>
               <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Automatic SMS Processing</h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm">Instantly processes M-Pesa SMS notifications to track your expenses</p>
             </div>
             <div className="text-center group">
-              <div className="h-16 w-16 bg-gradient-to-br from-teal-100 to-teal-200 dark:from-teal-800 dark:to-teal-700 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200">
-                <TrendingUp className="h-8 w-8 text-teal-600 dark:text-teal-400" />
+              <div className="h-16 w-16 bg-gradient-to-br from-indigo-100 to-indigo-200 dark:from-indigo-800 dark:to-indigo-700 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200">
+                <TrendingUp className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
               </div>
               <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Smart Analytics</h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm">Get insights into your spending patterns with intelligent categorization</p>
             </div>
             <div className="text-center group">
-              <div className="h-16 w-16 bg-gradient-to-br from-cyan-100 to-cyan-200 dark:from-cyan-800 dark:to-cyan-700 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200">
-                <ShieldCheck className="h-8 w-8 text-cyan-600 dark:text-cyan-400" />
+              <div className="h-16 w-16 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200">
+                <ShieldCheck className="h-8 w-8 text-slate-600 dark:text-slate-400" />
               </div>
               <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Secure & Private</h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm">Your financial data is protected with enterprise-grade security</p>
             </div>
           </div>
-          
+
           {/* Mobile Features - Simple list */}
           <div className="md:hidden mb-6">
             <div className="text-center mb-4">
@@ -164,7 +163,7 @@ export default function Landing() {
                           value={loginEmail}
                           onChange={(e) => setLoginEmail(e.target.value)}
                           required
-                          className="h-10 md:h-12 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                          className="h-10 md:h-12 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
                         />
                       </div>
                       <div className="space-y-2">
@@ -177,13 +176,13 @@ export default function Landing() {
                           value={loginPassword}
                           onChange={(e) => setLoginPassword(e.target.value)}
                           required
-                          className="h-10 md:h-12 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                          className="h-10 md:h-12 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
                         />
                       </div>
-                      <Button 
+                      <Button
                         data-testid="button-sign-in"
-                        type="submit" 
-                        className="w-full h-10 md:h-12 text-sm md:text-base bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]" 
+                        type="submit"
+                        className="w-full h-10 md:h-12 text-sm md:text-base bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]"
                         disabled={isLoading}
                       >
                         {isLoading ? (
@@ -213,7 +212,7 @@ export default function Landing() {
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
                             required
-                            className="h-9 md:h-11 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                            className="h-9 md:h-11 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
                           />
                         </div>
                         <div className="space-y-2">
@@ -225,7 +224,7 @@ export default function Landing() {
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
                             required
-                            className="h-9 md:h-11 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                            className="h-9 md:h-11 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
                           />
                         </div>
                       </div>
@@ -239,7 +238,7 @@ export default function Landing() {
                           value={signupEmail}
                           onChange={(e) => setSignupEmail(e.target.value)}
                           required
-                          className="h-10 md:h-12 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                          className="h-10 md:h-12 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
                         />
                       </div>
                       <div className="space-y-2">
@@ -253,16 +252,16 @@ export default function Landing() {
                           onChange={(e) => setSignupPassword(e.target.value)}
                           required
                           minLength={6}
-                          className="h-10 md:h-12 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                          className="h-10 md:h-12 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
                         />
                       </div>
                       <div className="text-xs text-gray-500 dark:text-gray-400 hidden md:block">
                         Password must be at least 6 characters long
                       </div>
-                      <Button 
+                      <Button
                         data-testid="button-create-account"
-                        type="submit" 
-                        className="w-full h-10 md:h-12 text-sm md:text-base bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]" 
+                        type="submit"
+                        className="w-full h-10 md:h-12 text-sm md:text-base bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]"
                         disabled={isLoading}
                       >
                         {isLoading ? (
@@ -288,19 +287,19 @@ export default function Landing() {
               <h3 className="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 md:mb-6 hidden md:block">Why choose Yasinga?</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 max-w-2xl mx-auto">
                 <div className="flex items-center gap-2 md:gap-3 p-2 md:p-4 bg-white/60 dark:bg-gray-800/60 rounded-lg backdrop-blur-sm">
-                  <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                  <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
                   <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300">Real-time transaction tracking</span>
                 </div>
                 <div className="flex items-center gap-2 md:gap-3 p-2 md:p-4 bg-white/60 dark:bg-gray-800/60 rounded-lg backdrop-blur-sm">
-                  <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                  <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
                   <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300">Intelligent expense categorization</span>
                 </div>
                 <div className="flex items-center gap-2 md:gap-3 p-2 md:p-4 bg-white/60 dark:bg-gray-800/60 rounded-lg backdrop-blur-sm">
-                  <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                  <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
                   <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300">Business & personal separation</span>
                 </div>
                 <div className="flex items-center gap-2 md:gap-3 p-2 md:p-4 bg-white/60 dark:bg-gray-800/60 rounded-lg backdrop-blur-sm">
-                  <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                  <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
                   <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300">Comprehensive reporting</span>
                 </div>
               </div>
