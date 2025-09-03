@@ -85,10 +85,10 @@ export default function Landing() {
           {/* Header with branding - Compact for mobile */}
           <div className="text-center mb-6 md:mb-12">
             <div className="inline-flex items-center gap-2 md:gap-3 mb-3 md:mb-6">
-              <div className="h-10 w-10 md:h-12 md:w-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+              <div className="h-10 w-10 md:h-12 md:w-12 bg-gradient-to-br from-red-800 to-red-900 rounded-xl flex items-center justify-center">
                 <Smartphone className="h-5 w-5 md:h-6 md:w-6 text-white" />
               </div>
-              <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              <h1 className="text-2xl md:text-4xl font-bold text-red-800">
                 Yasinga
               </h1>
             </div>
