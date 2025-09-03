@@ -125,12 +125,10 @@ export default function Dashboard() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center relative shadow-md">
-                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">Y</span>
-                </div>
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center relative shadow-md">
+                <span className="text-white font-bold text-xs">Y</span>
               </div>
-              <h1 className="font-bold text-lg text-primary">Yasinga</h1>
+              <h1 className="font-bold text-lg bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Yasinga</h1>
             </div>
             <div className="flex items-center space-x-2">
               <button
