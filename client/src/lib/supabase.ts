@@ -1,11 +1,9 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Supabase configuration with fallback values
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://llwshsrhvsjxnjaotafb.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxsd3Noc3JodnNqeG5qYW90YWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYyNzMzODEsImV4cCI6MjA3MTg0OTM4MX0.K8MUrt60zIdyfx6FhW05KfoUxASBcky_K5K-cviygA4';
-
-console.log('Environment check:', { supabaseUrl, supabaseAnonKey: supabaseAnonKey ? 'present' : 'missing' });
+// Supabase configuration - hardcoded for now to avoid environment variable issues
+const supabaseUrl = 'https://llwshsrhvsjxnjaotafb.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxsd3Noc3JodnNqeG5qYW90YWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYyNzMzODEsImV4cCI6MjA3MTg0OTM4MX0.K8MUrt60zIdyfx6FhW05KfoUxASBcky_K5K-cviygA4';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
