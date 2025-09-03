@@ -82,24 +82,24 @@ export default function Landing() {
       {/* Hero Section */}
       <div className="relative">
         <div className="absolute inset-0 bg-grid-black/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]" />
-        <div className="container mx-auto px-4 py-16">
-          {/* Header with branding */}
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-3 mb-6">
-              <div className="h-12 w-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
-                <Smartphone className="h-6 w-6 text-white" />
+        <div className="container mx-auto px-4 py-6 md:py-12">
+          {/* Header with branding - Compact for mobile */}
+          <div className="text-center mb-6 md:mb-12">
+            <div className="inline-flex items-center gap-2 md:gap-3 mb-3 md:mb-6">
+              <div className="h-10 w-10 md:h-12 md:w-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+                <Smartphone className="h-5 w-5 md:h-6 md:w-6 text-white" />
               </div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+              <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                 Yasinga
               </h1>
             </div>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed px-4">
               Smart M-Pesa expense tracking for Kenyan businesses and individuals
             </p>
           </div>
 
-          {/* Features Grid */}
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
+          {/* Features Grid - Hidden on mobile */}
+          <div className="hidden md:grid md:grid-cols-3 gap-8 mb-12">
             <div className="text-center group">
               <div className="h-16 w-16 bg-gradient-to-br from-emerald-100 to-emerald-200 dark:from-emerald-800 dark:to-emerald-700 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200">
                 <Zap className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
@@ -122,14 +122,23 @@ export default function Landing() {
               <p className="text-gray-600 dark:text-gray-300 text-sm">Your financial data is protected with enterprise-grade security</p>
             </div>
           </div>
+          
+          {/* Mobile Features - Simple list */}
+          <div className="md:hidden mb-6">
+            <div className="text-center mb-4">
+              <p className="text-sm text-gray-600 dark:text-gray-300 font-medium">
+                ✨ Automatic SMS Processing • 📊 Smart Analytics • 🔒 Secure & Private
+              </p>
+            </div>
+          </div>
 
           {/* Auth Section */}
           <div className="max-w-lg mx-auto">
             <Card className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 border-0 shadow-2xl">
               <CardHeader className="text-center pb-2">
-                <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">Get Started</CardTitle>
-                <CardDescription className="text-gray-600 dark:text-gray-300">
-                  Join thousands of users managing their M-Pesa expenses smarter
+                <CardTitle className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Get Started</CardTitle>
+                <CardDescription className="text-gray-600 dark:text-gray-300 text-sm md:text-base">
+                  Join thousands managing their M-Pesa expenses smarter
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-6">
@@ -143,8 +152,8 @@ export default function Landing() {
                     </TabsTrigger>
                   </TabsList>
 
-                  <TabsContent value="login" className="space-y-6 mt-6">
-                    <form onSubmit={handleSignIn} className="space-y-5">
+                  <TabsContent value="login" className="space-y-4 md:space-y-6 mt-4 md:mt-6">
+                    <form onSubmit={handleSignIn} className="space-y-4 md:space-y-5">
                       <div className="space-y-2">
                         <Label htmlFor="login-email" className="text-gray-700 dark:text-gray-300 font-medium">Email Address</Label>
                         <Input
@@ -155,7 +164,7 @@ export default function Landing() {
                           value={loginEmail}
                           onChange={(e) => setLoginEmail(e.target.value)}
                           required
-                          className="h-12 border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                          className="h-10 md:h-12 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
                         />
                       </div>
                       <div className="space-y-2">
@@ -168,13 +177,13 @@ export default function Landing() {
                           value={loginPassword}
                           onChange={(e) => setLoginPassword(e.target.value)}
                           required
-                          className="h-12 border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                          className="h-10 md:h-12 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
                         />
                       </div>
                       <Button 
                         data-testid="button-sign-in"
                         type="submit" 
-                        className="w-full h-12 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]" 
+                        className="w-full h-10 md:h-12 text-sm md:text-base bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]" 
                         disabled={isLoading}
                       >
                         {isLoading ? (
@@ -192,8 +201,8 @@ export default function Landing() {
                     </form>
                   </TabsContent>
 
-                  <TabsContent value="signup" className="space-y-6 mt-6">
-                    <form onSubmit={handleSignUp} className="space-y-5">
+                  <TabsContent value="signup" className="space-y-4 md:space-y-6 mt-4 md:mt-6">
+                    <form onSubmit={handleSignUp} className="space-y-4 md:space-y-5">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="first-name" className="text-gray-700 dark:text-gray-300 font-medium">First Name</Label>
@@ -204,7 +213,7 @@ export default function Landing() {
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
                             required
-                            className="h-11 border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                            className="h-9 md:h-11 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
                           />
                         </div>
                         <div className="space-y-2">
@@ -216,7 +225,7 @@ export default function Landing() {
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
                             required
-                            className="h-11 border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                            className="h-9 md:h-11 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
                           />
                         </div>
                       </div>
@@ -230,7 +239,7 @@ export default function Landing() {
                           value={signupEmail}
                           onChange={(e) => setSignupEmail(e.target.value)}
                           required
-                          className="h-12 border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                          className="h-10 md:h-12 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
                         />
                       </div>
                       <div className="space-y-2">
@@ -244,16 +253,16 @@ export default function Landing() {
                           onChange={(e) => setSignupPassword(e.target.value)}
                           required
                           minLength={6}
-                          className="h-12 border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                          className="h-10 md:h-12 text-sm md:text-base border-gray-200 dark:border-gray-600 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
                         />
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                      <div className="text-xs text-gray-500 dark:text-gray-400 hidden md:block">
                         Password must be at least 6 characters long
                       </div>
                       <Button 
                         data-testid="button-create-account"
                         type="submit" 
-                        className="w-full h-12 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]" 
+                        className="w-full h-10 md:h-12 text-sm md:text-base bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]" 
                         disabled={isLoading}
                       >
                         {isLoading ? (
@@ -274,25 +283,25 @@ export default function Landing() {
               </CardContent>
             </Card>
 
-            {/* Benefits Section */}
-            <div className="mt-12 text-center">
-              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-6">Why choose Yasinga?</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
-                <div className="flex items-center gap-3 p-4 bg-white/60 dark:bg-gray-800/60 rounded-lg backdrop-blur-sm">
-                  <CheckCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">Real-time transaction tracking</span>
+            {/* Benefits Section - Simplified for mobile */}
+            <div className="mt-6 md:mt-12 text-center">
+              <h3 className="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 md:mb-6 hidden md:block">Why choose Yasinga?</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 max-w-2xl mx-auto">
+                <div className="flex items-center gap-2 md:gap-3 p-2 md:p-4 bg-white/60 dark:bg-gray-800/60 rounded-lg backdrop-blur-sm">
+                  <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                  <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300">Real-time transaction tracking</span>
                 </div>
-                <div className="flex items-center gap-3 p-4 bg-white/60 dark:bg-gray-800/60 rounded-lg backdrop-blur-sm">
-                  <CheckCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">Intelligent expense categorization</span>
+                <div className="flex items-center gap-2 md:gap-3 p-2 md:p-4 bg-white/60 dark:bg-gray-800/60 rounded-lg backdrop-blur-sm">
+                  <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                  <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300">Intelligent expense categorization</span>
                 </div>
-                <div className="flex items-center gap-3 p-4 bg-white/60 dark:bg-gray-800/60 rounded-lg backdrop-blur-sm">
-                  <CheckCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">Business & personal separation</span>
+                <div className="flex items-center gap-2 md:gap-3 p-2 md:p-4 bg-white/60 dark:bg-gray-800/60 rounded-lg backdrop-blur-sm">
+                  <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                  <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300">Business & personal separation</span>
                 </div>
-                <div className="flex items-center gap-3 p-4 bg-white/60 dark:bg-gray-800/60 rounded-lg backdrop-blur-sm">
-                  <CheckCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">Comprehensive reporting</span>
+                <div className="flex items-center gap-2 md:gap-3 p-2 md:p-4 bg-white/60 dark:bg-gray-800/60 rounded-lg backdrop-blur-sm">
+                  <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                  <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300">Comprehensive reporting</span>
                 </div>
               </div>
             </div>
